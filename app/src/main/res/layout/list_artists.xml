@@ -10,5 +10,5 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
-    tools:context="com.kondenko.mobilizationtesttask.FragmentArtists"
+    tools:context=".ui.fragments.FragmentArtists"
     tools:listitem="@layout/fragment_artists"/>

@@ -1,3 +1,10 @@
 <resources>
+
     <string name="app_name">Yandex Mobilization Test Task</string>
+
+    <string name="title_artists">Artists</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

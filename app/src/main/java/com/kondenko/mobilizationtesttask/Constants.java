@@ -1,7 +1,12 @@
 package com.kondenko.mobilizationtesttask;
 
 /**
- * Created by Kondenko on 24.03.2016.
+ * Contains all necessary constants.
  */
 public class Constants {
+
+    public static final String ARTISTS_JSON_URL = "http://download.cdn.yandex.net/mobilization-2016/artists.json";
+
+    public static final String ARG_ARTIST_ID = "artistId";
+
 }
