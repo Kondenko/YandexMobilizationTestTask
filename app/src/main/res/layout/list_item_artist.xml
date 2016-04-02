@@ -1,7 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-    >
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="artist"
+            type="com.kondenko.mobilizationtesttask.model.Artist"/>
+    </data>
 
-</RelativeLayout>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/list_item_artist_height"
+                    android:padding="@dimen/list_item_artist_padding">
+
+        <ImageView
+            android:id="@+id/image_view_artist"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+
+        <TextView
+            android:id="@+id/textview_artist_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/image_view_artist"
+            android:layout_toRightOf="@+id/image_view_artist"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:text="@{artist.name}"/>
+
+        <TextView
+            android:id="@+id/textview_artist_genres"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textview_artist_name"
+            android:layout_toEndOf="@+id/image_view_artist"
+            android:layout_toRightOf="@+id/image_view_artist"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
+
+        <!-- "Releases" actually means albums and songs, this word is used only for a shorter name.
+              Not sure if this is a good choice though. -->
+        <TextView
+            android:id="@+id/textview_artist_releases"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_toEndOf="@+id/image_view_artist"
+            android:layout_toRightOf="@+id/image_view_artist"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
+
+    </RelativeLayout>
+
+</layout>

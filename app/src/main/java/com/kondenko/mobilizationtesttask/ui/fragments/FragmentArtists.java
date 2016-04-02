@@ -16,6 +16,7 @@ import com.google.gson.reflect.TypeToken;
 import com.kondenko.mobilizationtesttask.Constants;
 import com.kondenko.mobilizationtesttask.R;
 import com.kondenko.mobilizationtesttask.model.Artist;
+import com.kondenko.mobilizationtesttask.utils.OnListFragmentInteractionListener;
 
 import org.apache.commons.io.IOUtils;
 
@@ -26,10 +27,6 @@ import java.net.URL;
 
 /**
  * This fragment grabs artists data from the JSON file and displays it as a list.
- * <p/>
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
- * interface.
  */
 public class FragmentArtists extends Fragment {
 
@@ -118,7 +115,4 @@ public class FragmentArtists extends Fragment {
         }
     }
 
-    public interface OnListFragmentInteractionListener {
-        void onListItemClick(Artist artistItem);
-    }
 }

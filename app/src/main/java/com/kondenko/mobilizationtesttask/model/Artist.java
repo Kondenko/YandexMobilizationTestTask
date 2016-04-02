@@ -2,6 +2,12 @@ package com.kondenko.mobilizationtesttask.model;
 
 import java.util.Map;
 
+
+/**
+ * POJO to save data from JSON
+ */
+
+// TODO: Remove setters
 public class Artist {
 
     public static class Cover {
