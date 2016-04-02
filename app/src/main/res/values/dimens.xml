@@ -5,9 +5,14 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
 
+
     <!--List item dimensions-->
+    <dimen name="list_item_artist_height">128dp</dimen>
     <dimen name="list_item_artist_padding">16dp</dimen>
+    <dimen name="list_item_artist_photo_size">96dp</dimen>
 
-
+    <!--Values for text-->
+    <!-- TODO: Use TextAppearance instead of alpha -->
+    <item name="secondary_text_alpha" format="float" type="dimen">0.54</item>
 
 </resources>

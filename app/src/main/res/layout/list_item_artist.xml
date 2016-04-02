@@ -1,38 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
+
     <data>
+
         <variable
             name="artist"
             type="com.kondenko.mobilizationtesttask.model.Artist"/>
     </data>
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/list_item_artist_height"
-                    android:padding="@dimen/list_item_artist_padding">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/list_item_artist_height"
+        android:padding="@dimen/list_item_artist_padding">
 
         <ImageView
-            android:id="@+id/image_view_artist"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"/>
+            android:id="@+id/imageview_artist"
+            android:layout_width="@dimen/list_item_artist_photo_size"
+            android:layout_height="@dimen/list_item_artist_photo_size"
+            android:layout_centerVertical="true"/>
 
         <TextView
             android:id="@+id/textview_artist_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/image_view_artist"
-            android:layout_toRightOf="@+id/image_view_artist"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-            android:text="@{artist.name}"/>
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_toEndOf="@+id/imageview_artist"
+            android:layout_toRightOf="@+id/imageview_artist"
+            android:alpha="@dimen/secondary_text_alpha"
+            android:text="@{artist.name}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
 
         <TextView
             android:id="@+id/textview_artist_genres"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textview_artist_name"
-            android:layout_toEndOf="@+id/image_view_artist"
-            android:layout_toRightOf="@+id/image_view_artist"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_toEndOf="@+id/imageview_artist"
+            android:layout_toRightOf="@+id/imageview_artist"
+            android:alpha="@dimen/secondary_text_alpha"
+            android:text="@{artist.getGenresString()}"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
 
         <!-- "Releases" actually means albums and songs, this word is used only for a shorter name.
@@ -42,8 +50,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_toEndOf="@+id/image_view_artist"
-            android:layout_toRightOf="@+id/image_view_artist"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_toEndOf="@+id/imageview_artist"
+            android:layout_toRightOf="@+id/imageview_artist"
+            android:alpha="@dimen/secondary_text_alpha"
+            android:text="@{@string/artists_info_releases(artist.albums, artist.tracks)}"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
 

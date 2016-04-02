@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,9 @@ import android.view.ViewGroup;
 import com.kondenko.mobilizationtesttask.Constants;
 import com.kondenko.mobilizationtesttask.R;
 import com.kondenko.mobilizationtesttask.model.Artist;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 
 public class FragmentArtistDetails extends Fragment {
@@ -22,7 +26,6 @@ public class FragmentArtistDetails extends Fragment {
 
     public FragmentArtistDetails() {
     }
-
 
     public static FragmentArtistDetails newInstance(int artistId) {
         FragmentArtistDetails fragment = new FragmentArtistDetails();

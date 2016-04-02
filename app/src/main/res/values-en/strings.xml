@@ -1,7 +1,8 @@
 <resources>
 
-    <string name="app_name">Yandex Mobilization Test Task</string>
-
     <string name="title_artists">Artists</string>
+
+    <!-- Artists list -->
+    <string name="artists_info_releases" formatted = "false">%d albums, %d tracks</string>
 
 </resources>

@@ -4,6 +4,4 @@
              android:layout_height="match_parent"
              tools:context="com.kondenko.mobilizationtesttask.ui.fragments.FragmentArtistDetails">
 
-    <!-- TODO: Update blank fragment layout -->
-
 </FrameLayout>

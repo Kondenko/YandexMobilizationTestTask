@@ -1,37 +1,18 @@
 package com.kondenko.mobilizationtesttask.model;
 
-import java.util.Map;
-
-
 /**
  * POJO to save data from JSON
  */
 
-// TODO: Remove setters
 public class Artist {
 
     public static class Cover {
-        String small;
-        String big;
+        public String small;
+        public String big;
 
         public Cover() {
         }
 
-        public String getSmall() {
-            return small;
-        }
-
-        public void setSmall(String small) {
-            this.small = small;
-        }
-
-        public String getBig() {
-            return big;
-        }
-
-        public void setBig(String big) {
-            this.big = big;
-        }
     }
 
     public int id;
@@ -43,79 +24,22 @@ public class Artist {
     public String description;
     public Cover cover;
 
-    public Artist(int id, String name, String[] genres, int tracks, int albums, String link, String description, Cover cover) {
-        this.id = id;
-        this.name = name;
-        this.genres = genres;
-        this.tracks = tracks;
-        this.albums = albums;
-        this.link = link;
-        this.description = description;
-        this.cover = cover;
+    public Artist() {
     }
 
-    public String getLink() {
-        return link;
-    }
-
-    public void setLink(String link) {
-        this.link = link;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String[] getGenres() {
-        return genres;
-    }
-
-    public void setGenres(String[] genres) {
-        this.genres = genres;
-    }
-
-    public int getTracks() {
-        return tracks;
-    }
-
-    public void setTracks(int tracks) {
-        this.tracks = tracks;
-    }
-
-    public int getAlbums() {
-        return albums;
-    }
-
-    public void setAlbums(int albums) {
-        this.albums = albums;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Cover getCover() {
-        return cover;
-    }
-
-    public void setCover(Cover cover) {
-        this.cover = cover;
+    /**
+     * Returns a single string of genres separated with commas.
+     *
+     * @return list of genres
+     */
+    public String getGenresString() {
+        if (genres.length == 1) return genres[0]; // No point doing anything else since there's only one genre.
+        String genresSeparated = "";
+        for (int i = 0; i < genres.length; i++) {
+            // We don't want to add a comma in the end of the string
+            genresSeparated += i < genres.length - 1 ? genres[i] + ", " : genres[i];
+        }
+        return genresSeparated;
     }
 
 }
