@@ -24,8 +24,6 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.URL;
 
-import butterknife.BindString;
-
 
 /**
  * This fragment grabs artists data from the JSON file and displays it as a list.
@@ -78,7 +76,7 @@ public class FragmentArtists extends Fragment {
     }
 
     /**
-     * Parses JSON from an URL and creates an array of (@link Artist) objects
+     * Sets up the RecyclerView and its adapter to show the list of artists
      */
     private void setupRecyclerView(View view, Artist[] data) {
         if (view instanceof RecyclerView) {
