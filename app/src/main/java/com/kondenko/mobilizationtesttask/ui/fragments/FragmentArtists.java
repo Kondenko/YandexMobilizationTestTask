@@ -16,7 +16,6 @@ import com.kondenko.mobilizationtesttask.Constants;
 import com.kondenko.mobilizationtesttask.R;
 import com.kondenko.mobilizationtesttask.model.Artist;
 import com.kondenko.mobilizationtesttask.utils.ArtistsAdapter;
-import com.kondenko.mobilizationtesttask.utils.OnListFragmentInteractionListener;
 
 import org.apache.commons.io.IOUtils;
 
@@ -45,7 +44,6 @@ public class FragmentArtists extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mRecyclerView = inflater.inflate(R.layout.fragment_artists, container, false);
-        mListener.onFragmentSet(getContext().getString(R.string.title_artists));
         runJsonParsingTask(); // Download JSON, parse it and configure RecyclerView to show it
         return mRecyclerView;
     }
@@ -111,4 +109,7 @@ public class FragmentArtists extends Fragment {
         }
     }
 
+    public interface OnListFragmentInteractionListener {
+        void onListItemClick(Artist artistItem);
+    }
 }
