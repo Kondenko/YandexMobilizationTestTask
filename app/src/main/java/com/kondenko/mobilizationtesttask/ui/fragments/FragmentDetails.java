@@ -39,6 +39,7 @@ public class FragmentDetails extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        getActivity().setTitle(mArtist.name);
         FragmentArtistDetailsBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_artist_details, container, false);
         binding.setArtist(mArtist);
         return binding.getRoot();

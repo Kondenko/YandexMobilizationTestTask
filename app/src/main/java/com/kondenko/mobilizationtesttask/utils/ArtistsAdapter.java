@@ -1,8 +1,6 @@
 
 package com.kondenko.mobilizationtesttask.utils;
 
-import android.content.Context;
-import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,19 +11,19 @@ import android.widget.ImageView;
 import com.kondenko.mobilizationtesttask.R;
 import com.kondenko.mobilizationtesttask.databinding.ListItemArtistBinding;
 import com.kondenko.mobilizationtesttask.model.Artist;
+import com.kondenko.mobilizationtesttask.ui.fragments.FragmentArtists;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
-import butterknife.BindDimen;
 import butterknife.ButterKnife;
 
 public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ViewHolder> {
 
 
     private final Artist[] mArtists;
-    private final OnListFragmentInteractionListener mListener;
+    private final FragmentArtists.OnListFragmentInteractionListener mListener;
 
-    public ArtistsAdapter(Artist[] artists, OnListFragmentInteractionListener listener) {
+    public ArtistsAdapter(Artist[] artists, FragmentArtists.OnListFragmentInteractionListener listener) {
         mArtists = artists;
         mListener = listener;
     }
@@ -43,12 +41,8 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ViewHold
         loadImage(holder.imageView, artist.cover.small);
     }
 
-
-    @BindingAdapter("bind:imageUrl")
-    public static void loadImage(ImageView imageView, String v) {
-        Context context = imageView.getContext();
-        int size = (int) context.getResources().getDimension(R.dimen.list_item_artist_photo_size);
-        Picasso.with(context).load(v).resize(size, size).centerCrop().into(imageView);
+    public static void loadImage(ImageView imageView, String imageUrl) {
+        Picasso.with(imageView.getContext()).load(imageUrl).into(imageView);
     }
 
 
@@ -57,7 +51,7 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ViewHold
         return mArtists.length;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final View mView;
         public ListItemArtistBinding binding;
         @Bind(R.id.imageview_artist)
@@ -66,8 +60,14 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ViewHold
         public ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+            view.setOnClickListener(this);
             mView = view;
             binding = DataBindingUtil.bind(view);
+        }
+
+        @Override
+        public void onClick(View view) {
+            mListener.onListItemClick(mArtists[getAdapterPosition()]);
         }
     }
 }

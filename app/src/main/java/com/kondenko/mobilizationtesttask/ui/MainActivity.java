@@ -23,19 +23,19 @@ public class MainActivity extends AppCompatActivity implements FragmentArtists.O
         setContentView(R.layout.activity_main);
         mActionBar = getSupportActionBar();
         mFragmentManager = getSupportFragmentManager();
-        setFragment(FragmentArtists.newInstance(), false, getTitle().toString());
+        setFragment(FragmentArtists.newInstance(), false);
+        // TODO: Set activity title after returning from details screen
     }
 
-    private void setFragment(Fragment fragment, boolean addToBackStack, String title) {
+    private void setFragment(Fragment fragment, boolean addToBackStack) {
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
         if (addToBackStack) transaction.addToBackStack(null);
-        if (mActionBar != null) mActionBar.setTitle(title);
         transaction.replace(R.id.container, fragment).commit();
     }
 
     @Override
     public void onListItemClick(Artist artistItem) {
-        setFragment(FragmentDetails.newInstance(artistItem), true, artistItem.name);
+        setFragment(FragmentDetails.newInstance(artistItem), true);
     }
 
 }

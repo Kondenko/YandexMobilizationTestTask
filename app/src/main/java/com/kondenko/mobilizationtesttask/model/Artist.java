@@ -60,7 +60,7 @@ public class Artist implements Parcelable {
         return genresSeparated;
     }
 
-    @BindingAdapter({"bind:cover.big"})
+    @BindingAdapter({"bind:imageUrl"})
     public static void loadImage(ImageView view, String imageUrl) {
         Picasso.with(view.getContext())
                 .load(imageUrl)

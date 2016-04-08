@@ -43,6 +43,7 @@ public class FragmentArtists extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        getActivity().setTitle(R.string.title_artists);
         mRecyclerView = inflater.inflate(R.layout.fragment_artists, container, false);
         runJsonParsingTask(); // Download JSON, parse it and configure RecyclerView to show it
         return mRecyclerView;
@@ -94,7 +95,7 @@ public class FragmentArtists extends Fragment {
                 // We should be able to download only one json file here
                 if (urls.length > 1) throw new IllegalArgumentException("Multiple parameters are not allowed here");
                 String json = IOUtils.toString(new URL(urls[0]));
-                Type array = new TypeToken<Artist[]>() {}.getType();
+                Type array = new TypeToken<Artist[]> (){}.getType();
                 return new Gson().fromJson(json, array);
             } catch (IOException e) {
                 e.printStackTrace();
