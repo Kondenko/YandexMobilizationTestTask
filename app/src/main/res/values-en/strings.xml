@@ -5,4 +5,9 @@
     <!-- Artists list -->
     <string name="artists_info_releases" formatted = "false">%d albums, %d tracks</string>
 
+    <!-- Artist details -->
+    <string name="artist_details_bio">Bio</string>
+    <string name="artists_details_releases" formatted = "false">%d albums • %d tracks</string>
+
+
 </resources>

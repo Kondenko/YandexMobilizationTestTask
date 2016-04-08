@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Yandex Mobilization Test Task</string>
+    <string name="app_name">Yandex.Mobilization</string>
 
     <string name="title_artists">Исполнители</string>
 
     <!-- Artists list -->
     <string name="artists_info_releases" formatted = "false">%d альбомов, %d песен</string>
+
+    <!-- Artist details -->
+    <string name="artist_details_bio">Биография</string>
+    <string name="artists_details_releases" formatted = "false">%d альбомов • %d песен</string>
 
 </resources>

@@ -11,6 +11,10 @@
     <dimen name="list_item_artist_padding">16dp</dimen>
     <dimen name="list_item_artist_photo_size">96dp</dimen>
 
+    <!-- Artist details -->
+    <dimen name="artist_details_photo_height">240dp</dimen>
+
+
     <!--Values for text-->
     <!-- TODO: Use TextAppearance instead of alpha -->
     <item name="secondary_text_alpha" format="float" type="dimen">0.54</item>

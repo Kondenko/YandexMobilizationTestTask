@@ -1,10 +1,17 @@
 package com.kondenko.mobilizationtesttask.model;
 
+import android.databinding.BindingAdapter;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
+
 /**
  * POJO to save data from JSON
  */
 
-public class Artist {
+public class Artist implements Parcelable {
 
     public static class Cover {
         public String small;
@@ -12,7 +19,6 @@ public class Artist {
 
         public Cover() {
         }
-
     }
 
     public int id;
@@ -27,6 +33,18 @@ public class Artist {
     public Artist() {
     }
 
+    public static final Creator<Artist> CREATOR = new Creator<Artist>() {
+        @Override
+        public Artist createFromParcel(Parcel in) {
+            return new Artist(in);
+        }
+
+        @Override
+        public Artist[] newArray(int size) {
+            return new Artist[size];
+        }
+    };
+
     /**
      * Returns a single string of genres separated with commas.
      *
@@ -40,6 +58,45 @@ public class Artist {
             genresSeparated += i < genres.length - 1 ? genres[i] + ", " : genres[i];
         }
         return genresSeparated;
+    }
+
+    @BindingAdapter({"bind:cover.big"})
+    public static void loadImage(ImageView view, String imageUrl) {
+        Picasso.with(view.getContext())
+                .load(imageUrl)
+                .into(view);
+    }
+
+    /** Parcelable stuff **/
+
+    protected Artist(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        genres = in.createStringArray();
+        tracks = in.readInt();
+        albums = in.readInt();
+        link = in.readString();
+        description = in.readString();
+        cover.small = in.readString();
+        cover.big = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeString(name);
+        parcel.writeStringArray(genres);
+        parcel.writeInt(tracks);
+        parcel.writeInt(albums);
+        parcel.writeString(link);
+        parcel.writeString(description);
+        parcel.writeString(cover.small);
+        parcel.writeString(cover.big);
     }
 
 }
