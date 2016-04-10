@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity implements FragmentArtists.O
     private ActionBar mActionBar;
     private FragmentManager mFragmentManager;
     private FragmentArtists mFragmentArtists;
+    private boolean mIsDetailsFragmentOpened;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +43,8 @@ public class MainActivity extends AppCompatActivity implements FragmentArtists.O
 
     private void setFragment(Fragment fragment, boolean openDetailsFragment) {
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
-//        if (openDetailsFragment) transaction.addToBackStack(null);
+        mIsDetailsFragmentOpened = openDetailsFragment;
+        if (openDetailsFragment) transaction.addToBackStack(null);
         mActionBar.setDisplayHomeAsUpEnabled(openDetailsFragment);
         mActionBar.setHomeButtonEnabled(openDetailsFragment);
         transaction.replace(R.id.container, fragment).commit();
@@ -51,6 +53,12 @@ public class MainActivity extends AppCompatActivity implements FragmentArtists.O
     @Override
     public void onListItemClick(Artist artistItem) {
         setFragment(FragmentDetails.newInstance(artistItem), true);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mIsDetailsFragmentOpened) setFragment(mFragmentArtists, false);
+        else super.onBackPressed();
     }
 
 }
