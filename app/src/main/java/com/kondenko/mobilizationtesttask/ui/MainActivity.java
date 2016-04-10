@@ -6,16 +6,19 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 
 import com.kondenko.mobilizationtesttask.R;
 import com.kondenko.mobilizationtesttask.model.Artist;
 import com.kondenko.mobilizationtesttask.ui.fragments.FragmentArtists;
 import com.kondenko.mobilizationtesttask.ui.fragments.FragmentDetails;
 
+// TODO: Provide up navigation
 public class MainActivity extends AppCompatActivity implements FragmentArtists.OnListFragmentInteractionListener {
 
     private ActionBar mActionBar;
     private FragmentManager mFragmentManager;
+    private FragmentArtists mFragmentArtists;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,13 +26,25 @@ public class MainActivity extends AppCompatActivity implements FragmentArtists.O
         setContentView(R.layout.activity_main);
         mActionBar = getSupportActionBar();
         mFragmentManager = getSupportFragmentManager();
-        setFragment(FragmentArtists.newInstance(), false);
-        // TODO: Set activity title after returning from details screen
+        mFragmentArtists = FragmentArtists.newInstance();
+        setFragment(mFragmentArtists, false);
     }
 
-    private void setFragment(Fragment fragment, boolean addToBackStack) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                setFragment(mFragmentArtists, false);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void setFragment(Fragment fragment, boolean openDetailsFragment) {
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
-        if (addToBackStack) transaction.addToBackStack(null);
+//        if (openDetailsFragment) transaction.addToBackStack(null);
+        mActionBar.setDisplayHomeAsUpEnabled(openDetailsFragment);
+        mActionBar.setHomeButtonEnabled(openDetailsFragment);
         transaction.replace(R.id.container, fragment).commit();
     }
 

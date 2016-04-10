@@ -93,9 +93,11 @@ public class FragmentArtists extends Fragment {
         protected Artist[] doInBackground(String... urls) {
             try {
                 // We should be able to download only one json file here
-                if (urls.length > 1) throw new IllegalArgumentException("Multiple parameters are not allowed here");
+                if (urls.length > 1)
+                    throw new IllegalArgumentException("Multiple parameters are not allowed here");
                 String json = IOUtils.toString(new URL(urls[0]));
-                Type array = new TypeToken<Artist[]> (){}.getType();
+                Type array = new TypeToken<Artist[]>() {
+                }.getType();
                 return new Gson().fromJson(json, array);
             } catch (IOException e) {
                 e.printStackTrace();
