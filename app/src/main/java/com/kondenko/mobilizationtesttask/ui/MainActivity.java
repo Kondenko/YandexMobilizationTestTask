@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements FragmentArtists.O
     private void setFragment(Fragment fragment, boolean openDetailsFragment) {
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
         mIsDetailsFragmentOpened = openDetailsFragment;
-        if (openDetailsFragment) transaction.addToBackStack(null);
         mActionBar.setDisplayHomeAsUpEnabled(openDetailsFragment);
         mActionBar.setHomeButtonEnabled(openDetailsFragment);
         transaction.replace(R.id.container, fragment).commit();

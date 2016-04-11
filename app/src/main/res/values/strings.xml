@@ -12,4 +12,7 @@
     <string name="artist_details_bio">Биография</string>
     <string name="artists_details_releases" formatted = "false">%d альбомов • %d песен</string>
 
+    <!--Error messages-->
+    <string name="err_json_loading_failed">Невозможно загрузить список исполнителей</string>
+
 </resources>

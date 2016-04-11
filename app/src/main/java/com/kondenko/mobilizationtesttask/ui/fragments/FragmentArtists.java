@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -20,7 +21,11 @@ import com.kondenko.mobilizationtesttask.utils.ArtistsAdapter;
 
 import org.apache.commons.io.IOUtils;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.URL;
 
@@ -93,6 +98,38 @@ public class FragmentArtists extends Fragment {
 
 
     /**
+     * Saves a file with JSON code into internal storage
+     *
+     * @param contents json code
+     * @throws IOException
+     */
+    private void cacheJson(String contents) throws IOException {
+        FileOutputStream outputStream = getActivity().openFileOutput(Constants.CACHED_FILE_NAME, Context.MODE_PRIVATE);
+        outputStream.write(contents.getBytes());
+        outputStream.close();
+    }
+
+    /**
+     * Read the file with JSON code from internal storage
+     *
+     * @return JSON code string
+     *
+     * The snippet is taken from <a href="http://www.stackoverflow.com/questions/14768191/how-do-i-read-the-file-content-from-the-internal-storage-android-app">here</a>
+     */
+    private String getCachedJson() throws IOException {
+        FileInputStream inputStream = getActivity().openFileInput(Constants.CACHED_FILE_NAME);
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        StringBuilder stringBuilder = new StringBuilder();
+        String line;
+        while ((line = bufferedReader.readLine()) != null) {
+            stringBuilder.append(line);
+        }
+        return stringBuilder.toString();
+    }
+
+
+    /**
      * Downloads JSON file from specified URL.
      */
     private class JsonDownloaderTask extends AsyncTask<String, Void, Artist[]> {
@@ -105,17 +142,35 @@ public class FragmentArtists extends Fragment {
 
         @Override
         protected Artist[] doInBackground(String... urls) {
+
+            // We should be able to download only one json file here
+            if (urls.length > 1)
+                throw new IllegalArgumentException("Multiple parameters are not allowed here");
+
+            String json = null;
             try {
-                // We should be able to download only one json file here
-                if (urls.length > 1)
-                    throw new IllegalArgumentException("Multiple parameters are not allowed here");
-                String json = IOUtils.toString(new URL(urls[0]));
+                // Try to use the cached file
+                json = getCachedJson();
+            } catch (IOException e) {
+                // The file doesn't exist yet, we should create one
+                e.printStackTrace();
+                try {
+                    // Download the file from the url and save it
+                    json = IOUtils.toString(new URL(urls[0]));
+                    cacheJson(json);
+                } catch (IOException e1) {
+                    // Something unexpected happened
+                    e1.printStackTrace();
+                    Toast.makeText(getContext(), getString(R.string.err_json_loading_failed), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            if (json != null) {
                 Type array = new TypeToken<Artist[]>() {
                 }.getType();
                 return new Gson().fromJson(json, array);
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
+            } else {
+                throw new NullPointerException("Cannot get artists JSON");
             }
         }
 
