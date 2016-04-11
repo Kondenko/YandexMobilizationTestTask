@@ -6,7 +6,9 @@
     <dimen name="text_margin">16dp</dimen>
 
 
-    <!--List item dimensions-->
+    <!-- List -->
+    <dimen name="progressbar_size">48dp</dimen>
+
     <dimen name="list_item_artist_height">128dp</dimen>
     <dimen name="list_item_artist_padding">16dp</dimen>
     <dimen name="list_item_artist_photo_size">96dp</dimen>

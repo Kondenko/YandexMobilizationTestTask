@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -23,6 +24,9 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.URL;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 
 /**
  * Shows a list of artists
@@ -31,7 +35,11 @@ public class FragmentArtists extends Fragment {
 
     private OnListFragmentInteractionListener mListener;
 
-    private View mRecyclerView; // A single RecyclerView
+    @Bind(R.id.progressbar_artists)
+    protected ProgressBar mProgressBar;
+    @Bind(R.id.recyclerview_artists)
+    protected RecyclerView mRecyclerViewArtists;
+
 
     public FragmentArtists() {
     }
@@ -43,10 +51,11 @@ public class FragmentArtists extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_artists, container, false);
+        ButterKnife.bind(this, rootView);
         getActivity().setTitle(R.string.title_artists);
-        mRecyclerView = inflater.inflate(R.layout.fragment_artists, container, false);
         runJsonParsingTask(); // Download JSON, parse it and configure RecyclerView to show it
-        return mRecyclerView;
+        return rootView;
     }
 
     @Override
@@ -77,18 +86,23 @@ public class FragmentArtists extends Fragment {
     /**
      * Sets up the RecyclerView and its adapter to show the list of artists
      */
-    private void setupRecyclerView(View view, Artist[] data) {
-        if (view instanceof RecyclerView) {
-            RecyclerView recyclerView = (RecyclerView) view;
-            recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-            recyclerView.setAdapter(new ArtistsAdapter(data, mListener));
-        }
+    private void setupRecyclerView(Artist[] data) {
+        mRecyclerViewArtists.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerViewArtists.setAdapter(new ArtistsAdapter(data, mListener));
     }
+
 
     /**
      * Downloads JSON file from specified URL.
      */
     private class JsonDownloaderTask extends AsyncTask<String, Void, Artist[]> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mProgressBar.setVisibility(View.VISIBLE);
+        }
+
         @Override
         protected Artist[] doInBackground(String... urls) {
             try {
@@ -108,7 +122,8 @@ public class FragmentArtists extends Fragment {
         @Override
         protected void onPostExecute(Artist[] artists) {
             super.onPostExecute(artists);
-            setupRecyclerView(mRecyclerView, artists);
+            mProgressBar.setVisibility(View.INVISIBLE);
+            setupRecyclerView(artists);
         }
     }
 
