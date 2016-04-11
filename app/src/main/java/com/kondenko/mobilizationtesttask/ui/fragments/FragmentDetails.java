@@ -13,6 +13,9 @@ import com.kondenko.mobilizationtesttask.databinding.FragmentArtistDetailsBindin
 import com.kondenko.mobilizationtesttask.model.Artist;
 
 
+/**
+ * Provides detailed info about an artist
+ */
 public class FragmentDetails extends Fragment {
 
     private Artist mArtist = null;
@@ -33,6 +36,10 @@ public class FragmentDetails extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mArtist = getArguments().getParcelable(Constants.ARG_ARTIST_ID);
+            if (mArtist != null) {
+                // Capitalize the first letter of the description
+                mArtist.description = mArtist.description.substring(0, 1).toUpperCase() + mArtist.description.substring(1);
+            }
         }
     }
 

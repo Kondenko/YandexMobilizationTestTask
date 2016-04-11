@@ -13,7 +13,6 @@ import com.kondenko.mobilizationtesttask.model.Artist;
 import com.kondenko.mobilizationtesttask.ui.fragments.FragmentArtists;
 import com.kondenko.mobilizationtesttask.ui.fragments.FragmentDetails;
 
-// TODO: Provide up navigation
 public class MainActivity extends AppCompatActivity implements FragmentArtists.OnListFragmentInteractionListener {
 
     private ActionBar mActionBar;

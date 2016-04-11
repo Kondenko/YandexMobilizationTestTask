@@ -25,7 +25,7 @@ import java.net.URL;
 
 
 /**
- * This fragment grabs artists data from the JSON file and displays it as a list.
+ * Shows a list of artists
  */
 public class FragmentArtists extends Fragment {
 

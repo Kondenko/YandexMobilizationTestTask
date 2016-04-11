@@ -16,8 +16,4 @@
     <dimen name="artist_details_text_margin_top_primary">16dp</dimen>
     <dimen name="artist_details_text_margin_top_secondary">8dp</dimen>
 
-    <!--Values for text-->
-    <!-- TODO: Use TextAppearance instead of alpha -->
-    <item name="secondary_text_alpha" format="float" type="dimen">0.54</item>
-
 </resources>

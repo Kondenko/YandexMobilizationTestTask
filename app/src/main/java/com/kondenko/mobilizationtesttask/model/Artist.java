@@ -30,21 +30,6 @@ public class Artist implements Parcelable {
     public String description;
     public Cover cover;
 
-    public Artist() {
-    }
-
-    public static final Creator<Artist> CREATOR = new Creator<Artist>() {
-        @Override
-        public Artist createFromParcel(Parcel in) {
-            return new Artist(in);
-        }
-
-        @Override
-        public Artist[] newArray(int size) {
-            return new Artist[size];
-        }
-    };
-
     /**
      * Returns a single string of genres separated with commas.
      *
@@ -68,6 +53,18 @@ public class Artist implements Parcelable {
     }
 
     /** Parcelable stuff **/
+
+    public static final Creator<Artist> CREATOR = new Creator<Artist>() {
+        @Override
+        public Artist createFromParcel(Parcel in) {
+            return new Artist(in);
+        }
+
+        @Override
+        public Artist[] newArray(int size) {
+            return new Artist[size];
+        }
+    };
 
     protected Artist(Parcel in) {
         id = in.readInt();
