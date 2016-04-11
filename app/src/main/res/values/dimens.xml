@@ -12,8 +12,9 @@
     <dimen name="list_item_artist_photo_size">96dp</dimen>
 
     <!-- Artist details -->
-    <dimen name="artist_details_photo_height">240dp</dimen>
-
+    <dimen name="artist_details_photo_height">232dp</dimen>
+    <dimen name="artist_details_text_margin_top_primary">16dp</dimen>
+    <dimen name="artist_details_text_margin_top_secondary">8dp</dimen>
 
     <!--Values for text-->
     <!-- TODO: Use TextAppearance instead of alpha -->

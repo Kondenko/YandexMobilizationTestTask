@@ -27,7 +27,7 @@
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_toEndOf="@+id/imageview_artist"
             android:layout_toRightOf="@+id/imageview_artist"
-            android:alpha="@dimen/secondary_text_alpha"
+            android:textColor="@color/colorTextPrimary"
             android:text="@{artist.name}"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
 
@@ -39,7 +39,7 @@
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_toEndOf="@+id/imageview_artist"
             android:layout_toRightOf="@+id/imageview_artist"
-            android:alpha="@dimen/secondary_text_alpha"
+            android:textColor="@color/colorTextSecondaryList"
             android:text="@{artist.getGenresString()}"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
 
@@ -53,7 +53,7 @@
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_toEndOf="@+id/imageview_artist"
             android:layout_toRightOf="@+id/imageview_artist"
-            android:alpha="@dimen/secondary_text_alpha"
+            android:textColor="@color/colorTextSecondaryList"
             android:text="@{@string/artists_info_releases(artist.albums, artist.tracks)}"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
