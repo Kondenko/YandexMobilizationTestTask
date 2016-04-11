@@ -2,12 +2,22 @@
 
     <string name="title_artists">Artists</string>
 
-    <!-- Artists list -->
-    <string name="artists_info_releases" formatted = "false">%d albums, %d tracks</string>
-
     <!-- Artist details -->
     <string name="artist_details_bio">Bio</string>
-    <string name="artists_details_releases" formatted = "false">%d albums • %d tracks</string>
 
+    <!--Error messages-->
+    <string name="err_json_loading_failed">Cannot load artists</string>
+
+    <!--Plurals-->
+
+    <plurals name="albums">
+        <item quantity="one">%d album</item>
+        <item quantity="other">%d albums</item>
+    </plurals>
+
+    <plurals name="tracks">
+        <item quantity="one">%d song</item>
+        <item quantity="other">%d songs</item>
+    </plurals>
 
 </resources>

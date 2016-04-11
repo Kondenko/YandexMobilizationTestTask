@@ -25,11 +25,12 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_toEndOf="@+id/imageview_artist"
             android:layout_toRightOf="@+id/imageview_artist"
-            android:textColor="@color/colorTextPrimary"
             android:text="@{artist.name}"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textColor="@color/colorTextPrimary"/>
 
         <TextView
             android:id="@+id/textview_artist_genres"
@@ -37,11 +38,12 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/textview_artist_name"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_toEndOf="@+id/imageview_artist"
             android:layout_toRightOf="@+id/imageview_artist"
-            android:textColor="@color/colorTextSecondaryList"
             android:text="@{artist.getGenresString()}"
-            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:textColor="@color/colorTextSecondaryList"/>
 
         <!-- "Releases" actually means albums and songs, this word is used only for a shorter name.
               Not sure if this is a good choice though. -->
@@ -51,12 +53,12 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_toEndOf="@+id/imageview_artist"
             android:layout_toRightOf="@+id/imageview_artist"
-            android:textColor="@color/colorTextSecondaryList"
-            android:text="@{@string/artists_info_releases(artist.albums, artist.tracks)}"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
-
+            android:text="@{@plurals/albums(artist.albums, artist.albums, artist.albums, artist.albums, artist.albums, artist.albums) + ',' + ' ' + @plurals/tracks(artist.tracks, artist.tracks, artist.tracks, artist.tracks, artist.tracks, artist.tracks)}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/colorTextSecondaryList"/>
 
     </RelativeLayout>
 
