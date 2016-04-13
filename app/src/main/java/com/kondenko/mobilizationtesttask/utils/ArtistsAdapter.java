@@ -20,7 +20,6 @@ import butterknife.ButterKnife;
 
 public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ViewHolder> {
 
-
     private final Artist[] mArtists;
     private final FragmentArtists.OnListFragmentInteractionListener mListener;
 
@@ -72,5 +71,6 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ViewHold
             mListener.onListItemClick(mArtists[getAdapterPosition()], imageView);
         }
     }
+
 }
 

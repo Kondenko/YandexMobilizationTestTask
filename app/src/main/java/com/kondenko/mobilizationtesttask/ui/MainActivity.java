@@ -8,13 +8,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.transition.AutoTransition;
-import android.transition.ChangeImageTransform;
-import android.transition.Explode;
 import android.transition.Fade;
-import android.util.Log;
+import android.transition.Slide;
+import android.transition.TransitionSet;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,10 +23,6 @@ import com.kondenko.mobilizationtesttask.model.Artist;
 import com.kondenko.mobilizationtesttask.ui.fragments.FragmentArtists;
 import com.kondenko.mobilizationtesttask.ui.fragments.FragmentDetails;
 import com.kondenko.mobilizationtesttask.utils.DetailsTransition;
-
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -71,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements FragmentArtists.O
         // Animated transition between fragments
         if (openDetailsFragment && sharedElement != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             fragment.setSharedElementEnterTransition(new DetailsTransition());
-            fragment.setEnterTransition(new Fade());
+            fragment.setEnterTransition(new TransitionSet().addTransition(new Slide()).addTransition(new Fade()).setInterpolator(new DecelerateInterpolator()));
             fragment.setExitTransition(new Fade());
             mFragmentArtists.setExitTransition(new Fade());
             fragment.setSharedElementReturnTransition(new DetailsTransition());

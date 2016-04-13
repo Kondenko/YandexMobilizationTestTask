@@ -3,17 +3,14 @@ package com.kondenko.mobilizationtesttask.ui.fragments;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.WorkerThread;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -32,7 +29,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
@@ -181,6 +177,7 @@ public class FragmentArtists extends Fragment {
                 }
             }
 
+            // Enable offline mode if there's no connection but some data is available offline
             if (usingCachedFile && !mIsConnectionAvailable) mListener.onOfflineModeEnabled();
 
             Type array = new TypeToken<Artist[]>() {
