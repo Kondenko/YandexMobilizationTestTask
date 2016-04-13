@@ -113,7 +113,7 @@ public class FragmentArtists extends Fragment {
      * Read the file with JSON code from internal storage
      *
      * @return JSON code string
-     *
+     * <p/>
      * The snippet is taken from <a href="http://www.stackoverflow.com/questions/14768191/how-do-i-read-the-file-content-from-the-internal-storage-android-app">here</a>
      */
     private String getCachedJson() throws IOException {
@@ -147,38 +147,39 @@ public class FragmentArtists extends Fragment {
             if (urls.length > 1)
                 throw new IllegalArgumentException("Multiple parameters are not allowed here");
 
-            String json = null;
+            String json;
             try {
                 // Try to use the cached file
                 json = getCachedJson();
             } catch (IOException e) {
-                // The file doesn't exist yet, we should create one
                 e.printStackTrace();
                 try {
+                    // The file doesn't exist yet, we should create one
                     // Download the file from the url and save it
                     json = IOUtils.toString(new URL(urls[0]));
                     cacheJson(json);
                 } catch (IOException e1) {
-                    // Something unexpected happened
+                    // Can't get any data
                     e1.printStackTrace();
-                    Toast.makeText(getContext(), getString(R.string.err_json_loading_failed), Toast.LENGTH_SHORT).show();
+                    return null;
                 }
             }
 
-            if (json != null) {
-                Type array = new TypeToken<Artist[]>() {
-                }.getType();
-                return new Gson().fromJson(json, array);
-            } else {
-                throw new NullPointerException("Cannot get artists JSON");
-            }
+            Type array = new TypeToken<Artist[]>() {}.getType();
+            return new Gson().fromJson(json, array);
         }
 
         @Override
         protected void onPostExecute(Artist[] artists) {
             super.onPostExecute(artists);
             mProgressBar.setVisibility(View.INVISIBLE);
-            setupRecyclerView(artists);
+            if (artists != null) {
+                // JSON file have been successfully downloaded, go further
+                setupRecyclerView(artists);
+            } else {
+                // No connection, no cached data - show an error
+                Toast.makeText(getContext(), "Cannot load artists list", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
