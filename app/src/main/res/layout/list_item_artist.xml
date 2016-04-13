@@ -11,7 +11,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/list_item_artist_height"
-        android:padding="@dimen/list_item_artist_padding">
+        android:padding="@dimen/list_item_artist_padding"
+        android:background="?attr/selectableItemBackground">
 
         <ImageView
             android:id="@+id/imageview_artist"
