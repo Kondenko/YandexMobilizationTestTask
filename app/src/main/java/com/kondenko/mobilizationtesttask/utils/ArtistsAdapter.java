@@ -2,6 +2,7 @@
 package com.kondenko.mobilizationtesttask.utils;
 
 import android.databinding.DataBindingUtil;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +40,7 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ViewHold
         Artist artist = mArtists[position];
         holder.binding.setArtist(artist);
         loadImage(holder.imageView, artist.cover.small);
+        ViewCompat.setTransitionName(holder.imageView, String.valueOf(position) + "_image");
     }
 
     public static void loadImage(ImageView imageView, String imageUrl) {
@@ -67,7 +69,7 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ViewHold
 
         @Override
         public void onClick(View view) {
-            mListener.onListItemClick(mArtists[getAdapterPosition()]);
+            mListener.onListItemClick(mArtists[getAdapterPosition()], imageView);
         }
     }
 }

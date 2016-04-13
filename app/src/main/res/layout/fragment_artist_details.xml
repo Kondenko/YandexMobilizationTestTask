@@ -22,6 +22,8 @@
             android:layout_height="@dimen/artist_details_photo_height"
             android:scaleType="centerCrop"
             app:imageUrl="@{artist.cover.big}"
+            android:transitionName="transitionArtistPhoto"
+            tools:targetApi="lollipop"
             />
 
         <ScrollView

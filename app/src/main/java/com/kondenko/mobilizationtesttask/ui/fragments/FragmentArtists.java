@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -184,6 +185,6 @@ public class FragmentArtists extends Fragment {
     }
 
     public interface OnListFragmentInteractionListener {
-        void onListItemClick(Artist artistItem);
+        void onListItemClick(Artist artistItem, ImageView sharedElement);
     }
 }
