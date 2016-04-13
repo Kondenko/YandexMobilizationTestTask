@@ -3,14 +3,17 @@ package com.kondenko.mobilizationtesttask.ui.fragments;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.WorkerThread;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -19,6 +22,7 @@ import com.kondenko.mobilizationtesttask.Constants;
 import com.kondenko.mobilizationtesttask.R;
 import com.kondenko.mobilizationtesttask.model.Artist;
 import com.kondenko.mobilizationtesttask.utils.ArtistsAdapter;
+import com.kondenko.mobilizationtesttask.utils.ConnectionCheckerAsyncTask;
 
 import org.apache.commons.io.IOUtils;
 
@@ -28,7 +32,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.concurrent.ExecutionException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -46,6 +52,7 @@ public class FragmentArtists extends Fragment {
     @Bind(R.id.recyclerview_artists)
     protected RecyclerView mRecyclerViewArtists;
 
+    private boolean mIsConnectionAvailable = false;
 
     public FragmentArtists() {
     }
@@ -54,12 +61,18 @@ public class FragmentArtists extends Fragment {
         return new FragmentArtists();
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_artists, container, false);
         ButterKnife.bind(this, rootView);
         getActivity().setTitle(R.string.title_artists);
+        try {
+            mIsConnectionAvailable = new ConnectionCheckerAsyncTask().execute().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
         runJsonParsingTask(); // Download JSON, parse it and configure RecyclerView to show it
         return rootView;
     }
@@ -129,7 +142,6 @@ public class FragmentArtists extends Fragment {
         return stringBuilder.toString();
     }
 
-
     /**
      * Downloads JSON file from specified URL.
      */
@@ -149,9 +161,12 @@ public class FragmentArtists extends Fragment {
                 throw new IllegalArgumentException("Multiple parameters are not allowed here");
 
             String json;
+            boolean usingCachedFile = false;
+
             try {
                 // Try to use the cached file
                 json = getCachedJson();
+                usingCachedFile = true;
             } catch (IOException e) {
                 e.printStackTrace();
                 try {
@@ -166,7 +181,10 @@ public class FragmentArtists extends Fragment {
                 }
             }
 
-            Type array = new TypeToken<Artist[]>() {}.getType();
+            if (usingCachedFile && !mIsConnectionAvailable) mListener.onOfflineModeEnabled();
+
+            Type array = new TypeToken<Artist[]>() {
+            }.getType();
             return new Gson().fromJson(json, array);
         }
 
@@ -186,5 +204,7 @@ public class FragmentArtists extends Fragment {
 
     public interface OnListFragmentInteractionListener {
         void onListItemClick(Artist artistItem, ImageView sharedElement);
+
+        void onOfflineModeEnabled();
     }
 }

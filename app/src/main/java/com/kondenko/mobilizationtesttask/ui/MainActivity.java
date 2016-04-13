@@ -12,8 +12,11 @@ import android.transition.AutoTransition;
 import android.transition.ChangeImageTransform;
 import android.transition.Explode;
 import android.transition.Fade;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.kondenko.mobilizationtesttask.Constants;
 import com.kondenko.mobilizationtesttask.R;
@@ -22,17 +25,27 @@ import com.kondenko.mobilizationtesttask.ui.fragments.FragmentArtists;
 import com.kondenko.mobilizationtesttask.ui.fragments.FragmentDetails;
 import com.kondenko.mobilizationtesttask.utils.DetailsTransition;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity implements FragmentArtists.OnListFragmentInteractionListener {
 
     private ActionBar mActionBar;
     private FragmentManager mFragmentManager;
     private FragmentArtists mFragmentArtists;
     private boolean mIsDetailsFragmentOpened;
+    @Bind(R.id.textview_offline_mode)
+    protected TextView mOfflineModeBanner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         mActionBar = getSupportActionBar();
         mFragmentManager = getSupportFragmentManager();
         mFragmentArtists = FragmentArtists.newInstance();
@@ -71,6 +84,11 @@ public class MainActivity extends AppCompatActivity implements FragmentArtists.O
     @Override
     public void onListItemClick(Artist artistItem, ImageView sharedElement) {
         setFragment(FragmentDetails.newInstance(artistItem), sharedElement, true);
+    }
+
+    @Override
+    public void onOfflineModeEnabled() {
+        mOfflineModeBanner.setVisibility(View.VISIBLE);
     }
 
     @Override

@@ -3,6 +3,9 @@
 
     <string name="app_name">Мобилизация (Тестовое задание)</string>
 
+
+    <string name="offline_mode">Режим оффлайн</string>
+
     <string name="title_artists">Исполнители</string>
 
     <!-- Artist details -->

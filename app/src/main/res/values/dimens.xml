@@ -5,6 +5,8 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
 
+    <dimen name="offline_mode_banner_height">32dp</dimen>
+    <dimen name="offline_mode_banner_text_size">10sp</dimen>
 
     <!-- List -->
     <dimen name="progressbar_size">48dp</dimen>

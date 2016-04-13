@@ -7,10 +7,27 @@
     android:orientation="vertical"
     tools:context=".ui.MainActivity">
 
+    <TextView
+        android:id="@+id/textview_offline_mode"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/offline_mode_banner_height"
+        android:layout_gravity="center_horizontal|top"
+        android:background="@color/colorPrimaryLight"
+        android:gravity="center"
+        android:text="@string/offline_mode"
+        android:textAllCaps="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        android:textColor="@color/colorTextPrimaryLight"
+        android:textStyle="bold"
+        android:visibility="gone"/>
+
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white"/>
+        android:background="@android:color/white">
+
+
+    </FrameLayout>
 
 </LinearLayout>
