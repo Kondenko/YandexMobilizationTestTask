@@ -22,12 +22,13 @@ import com.kondenko.mobilizationtesttask.R;
 import com.kondenko.mobilizationtesttask.model.Artist;
 import com.kondenko.mobilizationtesttask.ui.fragments.FragmentArtists;
 import com.kondenko.mobilizationtesttask.ui.fragments.FragmentDetails;
+import com.kondenko.mobilizationtesttask.ui.fragments.FragmentError;
 import com.kondenko.mobilizationtesttask.utils.DetailsTransition;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements FragmentArtists.OnListFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements FragmentArtists.ArtistsFragmentInteractionListener {
 
     private ActionBar mActionBar;
     private FragmentManager mFragmentManager;
@@ -44,13 +45,13 @@ public class MainActivity extends AppCompatActivity implements FragmentArtists.O
         mActionBar = getSupportActionBar();
         mFragmentManager = getSupportFragmentManager();
         mFragmentArtists = FragmentArtists.newInstance();
-        setFragment(mFragmentArtists, null, false);
+        setArtistsFragment();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            setFragment(mFragmentArtists, null, false);
+            setArtistsFragment();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -65,15 +66,24 @@ public class MainActivity extends AppCompatActivity implements FragmentArtists.O
 
         // Animated transition between fragments
         if (openDetailsFragment && sharedElement != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            DetailsTransition sharedTransition = new DetailsTransition();
+            TransitionSet slideFadeTransition = new TransitionSet().addTransition(new Slide()).addTransition(new Fade()).setInterpolator(new DecelerateInterpolator());
+
+//            mFragmentArtists.setExitTransition(slideFadeTransition);
+//
+//            fragment.setEnterTransition(slideFadeTransition);
+//            fragment.setExitTransition(sharedTransition);
+
             fragment.setSharedElementEnterTransition(new DetailsTransition());
-            fragment.setEnterTransition(new TransitionSet().addTransition(new Slide()).addTransition(new Fade()).setInterpolator(new DecelerateInterpolator()));
-            fragment.setExitTransition(new Fade());
-            mFragmentArtists.setExitTransition(new Fade());
             fragment.setSharedElementReturnTransition(new DetailsTransition());
             transaction.addSharedElement(sharedElement, Constants.TRANSITION_ARTIST_PHOTO);
         }
 
         transaction.replace(R.id.container, fragment).commit();
+    }
+
+    private void setArtistsFragment() {
+        setFragment(mFragmentArtists, null, false);
     }
 
     @Override
@@ -87,9 +97,20 @@ public class MainActivity extends AppCompatActivity implements FragmentArtists.O
     }
 
     @Override
-    public void onBackPressed() {
-        if (mIsDetailsFragmentOpened) setFragment(mFragmentArtists, null, false);
-        else super.onBackPressed();
+    public void onLoadingFail() {
+        FragmentError fragmentError = FragmentError.newInstance();
+        setFragment(fragmentError, null, false);
+        fragmentError.setOnRetryListener(new FragmentError.OnRetryListener() {
+            @Override
+            public void onRetry() {
+                setArtistsFragment();
+            }
+        });
     }
 
+    @Override
+    public void onBackPressed() {
+        if (mIsDetailsFragmentOpened) setArtistsFragment();
+        else super.onBackPressed();
+    }
 }

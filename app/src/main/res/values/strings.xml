@@ -12,7 +12,9 @@
     <string name="artist_details_bio">Bio</string>
 
     <!--Error messages-->
-    <string name="err_json_loading_failed">Cannot load artists</string>
+    <string name="err_json_loading_failed">Couldn\'t load artists</string>
+
+    <string name="err_retry">Retry</string>
 
     <!--Plurals-->
 
@@ -25,5 +27,8 @@
         <item quantity="one">%d song</item>
         <item quantity="other">%d songs</item>
     </plurals>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

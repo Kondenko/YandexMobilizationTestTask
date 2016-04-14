@@ -12,5 +12,6 @@ public class Constants {
     public static final String ARG_ARTIST_ID = "artistId";
 
     public static final String TRANSITION_ARTIST_PHOTO = "transitionArtistPhoto";
+    public static final String TRANSITION_NAME_POSTFIX = "_artist";
 
 }

@@ -1,5 +1,6 @@
 package com.kondenko.mobilizationtesttask.ui.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -41,7 +41,8 @@ import butterknife.ButterKnife;
  */
 public class FragmentArtists extends Fragment {
 
-    private OnListFragmentInteractionListener mListener;
+    private Activity mActivity;
+    private ArtistsFragmentInteractionListener mListener;
 
     @Bind(R.id.progressbar_artists)
     protected ProgressBar mProgressBar;
@@ -57,18 +58,21 @@ public class FragmentArtists extends Fragment {
         return new FragmentArtists();
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_artists, container, false);
         ButterKnife.bind(this, rootView);
-        getActivity().setTitle(R.string.title_artists);
+
+        mActivity = getActivity();
+        mActivity.setTitle(R.string.title_artists);
+
         try {
             mIsConnectionAvailable = new ConnectionCheckerAsyncTask().execute().get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
+
         runJsonParsingTask(); // Download JSON, parse it and configure RecyclerView to show it
         return rootView;
     }
@@ -76,11 +80,10 @@ public class FragmentArtists extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
+        if (context instanceof ArtistsFragmentInteractionListener) {
+            mListener = (ArtistsFragmentInteractionListener) context;
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
+            throw new RuntimeException(context.toString() + " must implement OnListFragmentInteractionListener");
         }
     }
 
@@ -93,7 +96,7 @@ public class FragmentArtists extends Fragment {
     /**
      * Calls AsyncTask to download JSON from the url.
      */
-    private void runJsonParsingTask() {
+    public void runJsonParsingTask() {
         JsonDownloaderTask jsonDownloader = new JsonDownloaderTask();
         jsonDownloader.execute(Constants.ARTISTS_JSON_URL);
     }
@@ -114,7 +117,7 @@ public class FragmentArtists extends Fragment {
      * @throws IOException
      */
     private void cacheJson(String contents) throws IOException {
-        FileOutputStream outputStream = getActivity().openFileOutput(Constants.CACHED_FILE_NAME, Context.MODE_PRIVATE);
+        FileOutputStream outputStream = mActivity.openFileOutput(Constants.CACHED_FILE_NAME, Context.MODE_PRIVATE);
         outputStream.write(contents.getBytes());
         outputStream.close();
     }
@@ -127,7 +130,7 @@ public class FragmentArtists extends Fragment {
      * The snippet is taken from <a href="http://www.stackoverflow.com/questions/14768191/how-do-i-read-the-file-content-from-the-internal-storage-android-app">here</a>
      */
     private String getCachedJson() throws IOException {
-        FileInputStream inputStream = getActivity().openFileInput(Constants.CACHED_FILE_NAME);
+        FileInputStream inputStream = mActivity.openFileInput(Constants.CACHED_FILE_NAME);
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
         StringBuilder stringBuilder = new StringBuilder();
@@ -151,7 +154,6 @@ public class FragmentArtists extends Fragment {
 
         @Override
         protected Artist[] doInBackground(String... urls) {
-
             // We should be able to download only one json file here
             if (urls.length > 1)
                 throw new IllegalArgumentException("Multiple parameters are not allowed here");
@@ -194,14 +196,16 @@ public class FragmentArtists extends Fragment {
                 setupRecyclerView(artists);
             } else {
                 // No connection, no cached data - show an error
-                Toast.makeText(getContext(), "Cannot load artists list", Toast.LENGTH_SHORT).show();
+                if (mListener != null) mListener.onLoadingFail();
             }
         }
     }
 
-    public interface OnListFragmentInteractionListener {
+    public interface ArtistsFragmentInteractionListener {
         void onListItemClick(Artist artistItem, ImageView sharedElement);
 
         void onOfflineModeEnabled();
+
+        void onLoadingFail();
     }
 }

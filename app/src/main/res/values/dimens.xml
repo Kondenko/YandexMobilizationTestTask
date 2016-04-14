@@ -20,4 +20,11 @@
     <dimen name="artist_details_text_margin_top_primary">16dp</dimen>
     <dimen name="artist_details_text_margin_top_secondary">8dp</dimen>
 
+    <!--Error screen-->
+    <dimen name="retry_btn_width">128dp</dimen>
+    <dimen name="retry_btn_height">48dp</dimen>
+    <dimen name="error_image_height">280dp</dimen>
+    <dimen name="retry_btn_margin_bottom">48dp</dimen>
+    <dimen name="retry_btn_margin_top">48dp</dimen>
+
 </resources>

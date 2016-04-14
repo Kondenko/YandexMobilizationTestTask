@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.kondenko.mobilizationtesttask.Constants;
 import com.kondenko.mobilizationtesttask.R;
 import com.kondenko.mobilizationtesttask.databinding.ListItemArtistBinding;
 import com.kondenko.mobilizationtesttask.model.Artist;
@@ -21,9 +22,9 @@ import butterknife.ButterKnife;
 public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ViewHolder> {
 
     private final Artist[] mArtists;
-    private final FragmentArtists.OnListFragmentInteractionListener mListener;
+    private final FragmentArtists.ArtistsFragmentInteractionListener mListener;
 
-    public ArtistsAdapter(Artist[] artists, FragmentArtists.OnListFragmentInteractionListener listener) {
+    public ArtistsAdapter(Artist[] artists, FragmentArtists.ArtistsFragmentInteractionListener listener) {
         mArtists = artists;
         mListener = listener;
     }
@@ -39,7 +40,7 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ViewHold
         Artist artist = mArtists[position];
         holder.binding.setArtist(artist);
         loadImage(holder.imageView, artist.cover.small);
-        ViewCompat.setTransitionName(holder.imageView, String.valueOf(position) + "_image");
+        ViewCompat.setTransitionName(holder.imageView, String.valueOf(position) + Constants.TRANSITION_NAME_POSTFIX);
     }
 
     public static void loadImage(ImageView imageView, String imageUrl) {
