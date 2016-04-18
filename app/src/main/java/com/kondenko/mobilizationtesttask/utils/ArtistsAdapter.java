@@ -13,6 +13,7 @@ import com.kondenko.mobilizationtesttask.Constants;
 import com.kondenko.mobilizationtesttask.R;
 import com.kondenko.mobilizationtesttask.databinding.ListItemArtistBinding;
 import com.kondenko.mobilizationtesttask.model.Artist;
+import com.kondenko.mobilizationtesttask.ui.MainActivity;
 import com.kondenko.mobilizationtesttask.ui.fragments.FragmentArtists;
 import com.squareup.picasso.Picasso;
 
@@ -47,14 +48,12 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ViewHold
         Picasso.with(imageView.getContext()).load(imageUrl).into(imageView);
     }
 
-
     @Override
     public int getItemCount() {
         return mArtists.length;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public final View mView;
         public ListItemArtistBinding binding;
         @Bind(R.id.imageview_artist)
         public ImageView imageView;
@@ -62,9 +61,8 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ViewHold
         public ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-            view.setOnClickListener(this);
-            mView = view;
             binding = DataBindingUtil.bind(view);
+            view.setOnClickListener(this);
         }
 
         @Override

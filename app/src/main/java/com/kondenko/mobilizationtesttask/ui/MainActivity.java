@@ -1,16 +1,21 @@
 package com.kondenko.mobilizationtesttask.ui;
 
+import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.SharedElementCallback;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.AutoTransition;
 import android.transition.Fade;
 import android.transition.Slide;
-import android.transition.TransitionSet;
+import android.transition.Transition;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
@@ -25,6 +30,8 @@ import com.kondenko.mobilizationtesttask.ui.fragments.FragmentDetails;
 import com.kondenko.mobilizationtesttask.ui.fragments.FragmentError;
 import com.kondenko.mobilizationtesttask.utils.DetailsTransition;
 
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -33,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements FragmentArtists.A
     private ActionBar mActionBar;
     private FragmentManager mFragmentManager;
     private FragmentArtists mFragmentArtists;
-    private boolean mIsDetailsFragmentOpened;
+    private boolean mIsDetailsFragmentOpened = false;
     @Bind(R.id.textview_offline_mode)
     protected TextView mOfflineModeBanner;
 
@@ -45,50 +52,52 @@ public class MainActivity extends AppCompatActivity implements FragmentArtists.A
         mActionBar = getSupportActionBar();
         mFragmentManager = getSupportFragmentManager();
         mFragmentArtists = FragmentArtists.newInstance();
-        setArtistsFragment();
+        setFragment(mFragmentArtists);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            setArtistsFragment();
+            onBackPressed();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void setFragment(Fragment fragment, @Nullable ImageView sharedElement, boolean openDetailsFragment) {
+    private void setFragment(Fragment fragment) {
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
+        transaction.replace(R.id.container, fragment).commit();
+    }
+
+    public void updateUi(boolean openDetailsFragment) {
         mIsDetailsFragmentOpened = openDetailsFragment;
         // Display the up button if we open the details screen
         mActionBar.setDisplayHomeAsUpEnabled(openDetailsFragment);
         mActionBar.setHomeButtonEnabled(openDetailsFragment);
-
-        // Animated transition between fragments
-        if (openDetailsFragment && sharedElement != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            DetailsTransition sharedTransition = new DetailsTransition();
-            TransitionSet slideFadeTransition = new TransitionSet().addTransition(new Slide()).addTransition(new Fade()).setInterpolator(new DecelerateInterpolator());
-
-//            mFragmentArtists.setExitTransition(slideFadeTransition);
-//
-//            fragment.setEnterTransition(slideFadeTransition);
-//            fragment.setExitTransition(sharedTransition);
-
-            fragment.setSharedElementEnterTransition(new DetailsTransition());
-            fragment.setSharedElementReturnTransition(new DetailsTransition());
-            transaction.addSharedElement(sharedElement, Constants.TRANSITION_ARTIST_PHOTO);
-        }
-
-        transaction.replace(R.id.container, fragment).commit();
-    }
-
-    private void setArtistsFragment() {
-        setFragment(mFragmentArtists, null, false);
     }
 
     @Override
-    public void onListItemClick(Artist artistItem, ImageView sharedElement) {
-        setFragment(FragmentDetails.newInstance(artistItem), sharedElement, true);
+    public void onListItemClick(Artist artist, ImageView sharedElement) {
+        updateUi(true);
+        FragmentDetails fragment = FragmentDetails.newInstance(artist);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            // Setup transitions
+            Transition sharedElementTransition = new DetailsTransition();
+            Transition slideTransition = new Slide().setDuration(Constants.TRANSITION_DURATION).setInterpolator(new DecelerateInterpolator());
+            Transition fadeTransition = new Fade().setDuration(Constants.TRANSITION_DURATION).setInterpolator(new DecelerateInterpolator());
+
+            fragment.setSharedElementEnterTransition(new DetailsTransition());
+            fragment.setSharedElementReturnTransition(sharedElementTransition);
+            fragment.setEnterTransition(slideTransition);
+            fragment.setExitTransition(fadeTransition);
+        }
+
+        mFragmentManager.beginTransaction()
+                .addSharedElement(sharedElement, getString(R.string.transition_artist_photo))
+                .replace(R.id.container, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override
@@ -99,18 +108,23 @@ public class MainActivity extends AppCompatActivity implements FragmentArtists.A
     @Override
     public void onLoadingFail() {
         FragmentError fragmentError = FragmentError.newInstance();
-        setFragment(fragmentError, null, false);
+        setFragment(fragmentError);
         fragmentError.setOnRetryListener(new FragmentError.OnRetryListener() {
             @Override
             public void onRetry() {
-                setArtistsFragment();
+                setFragment(mFragmentArtists);
             }
         });
     }
 
     @Override
     public void onBackPressed() {
-        if (mIsDetailsFragmentOpened) setArtistsFragment();
-        else super.onBackPressed();
+        if (mIsDetailsFragmentOpened) {
+            updateUi(false);
+            mFragmentManager.popBackStack();
+        } else {
+            super.onBackPressed();
+        }
     }
+
 }

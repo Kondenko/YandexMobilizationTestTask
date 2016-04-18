@@ -17,7 +17,6 @@
     <!--Plurals-->
 
     <plurals name="albums">
-        <item quantity="zero">%d альбомов</item>
         <item quantity="one">%d альбом</item>
         <item quantity="two">%d альбома</item>
         <item quantity="few">%d альбома</item>
@@ -26,7 +25,6 @@
     </plurals>
 
     <plurals name="tracks">
-        <item quantity="zero">%d песен</item>
         <item quantity="one">%d песня</item>
         <item quantity="two">%d песни</item>
         <item quantity="few">%d песен</item>

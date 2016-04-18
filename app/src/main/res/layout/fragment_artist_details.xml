@@ -21,8 +21,8 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/artist_details_photo_height"
             android:scaleType="centerCrop"
+            android:transitionName="@string/transition_artist_photo"
             app:imageUrl="@{artist.cover.big}"
-            android:transitionName="transitionArtistPhoto"
             tools:targetApi="lollipop"
             />
 
@@ -38,8 +38,8 @@
                 android:layout_marginLeft="@dimen/activity_vertical_margin"
                 android:layout_marginRight="@dimen/activity_vertical_margin"
                 android:layout_marginStart="@dimen/activity_vertical_margin"
-                android:paddingBottom="@dimen/artist_details_text_margin_top_primary"
                 android:orientation="vertical"
+                android:paddingBottom="@dimen/artist_details_text_margin_top_primary"
                 >
 
                 <TextView
@@ -57,8 +57,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginTop="@dimen/artist_details_text_margin_top_primary"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:text="@{@plurals/albums(artist.albums, artist.albums, artist.albums, artist.albums, artist.albums, artist.albums) + ',' + ' ' + @plurals/tracks(artist.tracks, artist.tracks, artist.tracks, artist.tracks, artist.tracks, artist.tracks)}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textColor="@color/colorTextSecondary"
                     />
 
