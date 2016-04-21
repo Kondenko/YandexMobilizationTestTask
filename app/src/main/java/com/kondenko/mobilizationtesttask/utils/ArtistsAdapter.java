@@ -13,7 +13,6 @@ import com.kondenko.mobilizationtesttask.Constants;
 import com.kondenko.mobilizationtesttask.R;
 import com.kondenko.mobilizationtesttask.databinding.ListItemArtistBinding;
 import com.kondenko.mobilizationtesttask.model.Artist;
-import com.kondenko.mobilizationtesttask.ui.MainActivity;
 import com.kondenko.mobilizationtesttask.ui.fragments.FragmentArtists;
 import com.squareup.picasso.Picasso;
 
@@ -41,7 +40,7 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ViewHold
         Artist artist = mArtists[position];
         holder.binding.setArtist(artist);
         loadImage(holder.imageView, artist.cover.small);
-        ViewCompat.setTransitionName(holder.imageView, String.valueOf(position) + Constants.TRANSITION_NAME_POSTFIX);
+        ViewCompat.setTransitionName(holder.imageView, String.valueOf(position) + Constants.TRANSITION_ARTIST_NAME_POSTFIX);
     }
 
     public static void loadImage(ImageView imageView, String imageUrl) {

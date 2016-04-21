@@ -13,12 +13,39 @@ import com.squareup.picasso.Picasso;
 
 public class Artist implements Parcelable {
 
-    public static class Cover {
+    public static class Cover implements Parcelable {
         public String small;
         public String big;
 
-        public Cover() {
+        protected Cover(Parcel in) {
+            small = in.readString();
+            big = in.readString();
         }
+
+        @Override
+        public void writeToParcel(Parcel parcel, int i) {
+            parcel.writeString(small);
+            parcel.writeString(big);
+        }
+
+        public static final Creator<Cover> CREATOR = new Creator<Cover>() {
+            @Override
+            public Cover createFromParcel(Parcel in) {
+                return new Cover(in);
+            }
+
+            @Override
+            public Cover[] newArray(int size) {
+                return new Cover[size];
+            }
+        };
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+
     }
 
     public int id;
@@ -36,7 +63,8 @@ public class Artist implements Parcelable {
      * @return list of genres
      */
     public String getGenresString() {
-        if (genres.length == 1) return genres[0]; // No point doing anything else since there's only one genre.
+        if (genres.length == 1)
+            return genres[0]; // No point doing anything else since there's only one genre.
         String genresSeparated = "";
         for (int i = 0; i < genres.length; i++) {
             // We don't want to add a comma in the end of the string
@@ -52,7 +80,9 @@ public class Artist implements Parcelable {
                 .into(view);
     }
 
-    /** Parcelable stuff **/
+    /**
+     * Parcelable stuff
+     **/
 
     public static final Creator<Artist> CREATOR = new Creator<Artist>() {
         @Override
@@ -74,8 +104,9 @@ public class Artist implements Parcelable {
         albums = in.readInt();
         link = in.readString();
         description = in.readString();
-        cover.small = in.readString();
-        cover.big = in.readString();
+        cover = in.readParcelable(Cover.class.getClassLoader());
+//        cover.small = in.readString();
+//        cover.big = in.readString();
     }
 
     @Override
@@ -92,8 +123,9 @@ public class Artist implements Parcelable {
         parcel.writeInt(albums);
         parcel.writeString(link);
         parcel.writeString(description);
-        parcel.writeString(cover.small);
-        parcel.writeString(cover.big);
+        parcel.writeParcelable(cover, i);
+//        parcel.writeString(cover.small);
+//        parcel.writeString(cover.big);
     }
 
 }

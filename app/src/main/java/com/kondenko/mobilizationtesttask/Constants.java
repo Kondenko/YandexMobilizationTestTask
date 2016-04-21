@@ -10,9 +10,9 @@ public class Constants {
     public static final String CACHED_FILE_NAME = "artists.json";
 
     public static final String ARG_ARTIST = "artist";
-    public static final String ARG_TRANSITION = "transition";
 
-    public static final String TRANSITION_NAME_POSTFIX = "_artist";
+    public static final String TRANSITION_ARTIST_NAME_POSTFIX = "_artist";
+    public static final String TRANSITION_ARTIST_PHOTO = "transitionArtistPhoto";
 
     public static final int TRANSITION_DURATION = 300;
 
