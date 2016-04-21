@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools">
+    >
 
     <data>
 
@@ -10,25 +10,69 @@
             type="com.kondenko.mobilizationtesttask.model.Artist"/>
     </data>
 
-    <LinearLayout
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context=".ui.fragments.ActivityDetails">
+        android:background="@android:color/white"
+        android:fitsSystemWindows="true"
+        >
 
-        <ImageView
-            android:id="@+id/imageview_artist_details_photo"
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/app_bar_layout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/artist_details_photo_height"
-            android:scaleType="centerCrop"
-            android:transitionName="@string/transition_artist_photo"
-            app:imageUrl="@{artist.cover.big}"
-            tools:targetApi="lollipop"
+            android:fitsSystemWindows="true"
+            >
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                app:contentScrim="?attr/colorPrimary"
+                app:expandedTitleMarginEnd="64dp"
+                app:expandedTitleMarginStart="@dimen/activity_vertical_margin"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:statusBarScrim="?attr/colorPrimaryDark"
+                >
+
+
+                <ImageView
+                    android:id="@+id/imageview_artist_details_photo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fitsSystemWindows="true"
+                    android:scaleType="centerCrop"
+                    android:transitionName="@string/transition_artist_photo"
+                    app:imageUrl="@{artist.cover.big}"
+                    />
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_collapseMode="pin"
+                    />
+
+            </android.support.design.widget.CollapsingToolbarLayout>
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_open_link"
+            android:layout_width="@dimen/fab_size"
+            android:layout_height="@dimen/fab_size"
+            app:layout_anchor="@id/app_bar_layout"
+            app:layout_anchorGravity="bottom|right|end"
+            android:src="@drawable/ic_open_in_browser_white_24px"
+            android:layout_marginRight="@dimen/activity_vertical_margin"
+            android:layout_marginEnd="@dimen/activity_vertical_margin"
             />
 
-        <ScrollView
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/nested_scroll_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            >
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -83,7 +127,8 @@
 
             </LinearLayout>
 
-        </ScrollView>
+        </android.support.v4.widget.NestedScrollView>
 
-    </LinearLayout>
+    </android.support.design.widget.CoordinatorLayout>
+
 </layout>

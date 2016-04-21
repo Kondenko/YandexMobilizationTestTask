@@ -1,4 +1,4 @@
-package com.kondenko.mobilizationtesttask.ui;
+package com.kondenko.mobilizationtesttask.ui.activities;
 
 import android.content.Intent;
 import android.os.Build;
@@ -16,14 +16,13 @@ import android.widget.TextView;
 import com.kondenko.mobilizationtesttask.Constants;
 import com.kondenko.mobilizationtesttask.R;
 import com.kondenko.mobilizationtesttask.model.Artist;
-import com.kondenko.mobilizationtesttask.ui.fragments.ActivityDetails;
 import com.kondenko.mobilizationtesttask.ui.fragments.FragmentArtists;
 import com.kondenko.mobilizationtesttask.ui.fragments.FragmentError;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements FragmentArtists.ArtistsFragmentInteractionListener {
+public class ActivityMain extends AppCompatActivity implements FragmentArtists.ArtistsFragmentInteractionListener {
 
     private FragmentManager mFragmentManager;
     private FragmentArtists mFragmentArtists;
@@ -58,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements FragmentArtists.A
     @Override
     public void onListItemClick(Artist artist, ImageView sharedElement) {
         Intent detailsActivity = new Intent(this, ActivityDetails.class);
-        detailsActivity.putExtra(Constants.ARG_ARTIST, artist);
+        detailsActivity.putExtra(Constants.EXTRA_ARTIST, artist);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             ActivityOptionsCompat options = ActivityOptionsCompat.
                     makeSceneTransitionAnimation(this, sharedElement, Constants.TRANSITION_ARTIST_PHOTO);
