@@ -3,6 +3,7 @@ package com.kondenko.mobilizationtesttask.model;
 import android.databinding.BindingAdapter;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
@@ -65,14 +66,15 @@ public class Artist implements Parcelable {
     public String getGenresString() {
         if (genres.length == 1)
             return genres[0]; // No point doing anything else since there's only one genre.
-        String genresSeparated = "";
-        for (int i = 0; i < genres.length; i++) {
-            // We don't want to add a comma in the end of the string
-            genresSeparated += i < genres.length - 1 ? genres[i] + ", " : genres[i];
-        }
-        return genresSeparated;
+        return TextUtils.join(", ", genres);
     }
 
+    /**
+     * Loads an image into an ImageView within a layout with Data Binding support
+     *
+     * @param view
+     * @param imageUrl
+     */
     @BindingAdapter({"bind:imageUrl"})
     public static void loadImage(ImageView view, String imageUrl) {
         Picasso.with(view.getContext())
@@ -105,8 +107,6 @@ public class Artist implements Parcelable {
         link = in.readString();
         description = in.readString();
         cover = in.readParcelable(Cover.class.getClassLoader());
-//        cover.small = in.readString();
-//        cover.big = in.readString();
     }
 
     @Override
@@ -124,8 +124,6 @@ public class Artist implements Parcelable {
         parcel.writeString(link);
         parcel.writeString(description);
         parcel.writeParcelable(cover, i);
-//        parcel.writeString(cover.small);
-//        parcel.writeString(cover.big);
     }
 
 }
