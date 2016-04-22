@@ -9,10 +9,14 @@ import android.support.customtabs.CustomTabsClient;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.customtabs.CustomTabsServiceConnection;
 import android.support.customtabs.CustomTabsSession;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.Transition;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.ScaleAnimation;
 
 import com.kondenko.mobilizationtesttask.Constants;
 import com.kondenko.mobilizationtesttask.R;
@@ -25,18 +29,17 @@ import com.kondenko.mobilizationtesttask.model.Artist;
  */
 public class ActivityDetails extends AppCompatActivity {
 
-    private final String CUSTOM_TAB_PACKAGE_NAME = "com.android.chrome";
-
-
     private Artist mArtist;
 
     private CustomTabsSession mCustomTabsSession;
 
+    private FloatingActionButton mFab = null;
+
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Setup binding
-        ActivityArtistDetailsBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_artist_details);
+        final ActivityArtistDetailsBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_artist_details);
 
         // Setup toolbar
         setSupportActionBar(binding.toolbarDetails);
@@ -56,20 +59,59 @@ public class ActivityDetails extends AppCompatActivity {
 
         // Perform additional stuff
         setTitle(mArtist.name);
+        mFab = binding.fabOpenInBrowser;
+
         if (mArtist.link != null) {
-            // Setup opening links
-            binding.fabOpenLink.setOnClickListener(new View.OnClickListener() {
+            // Setup a FAB to open artist's website if there is one
+            mFab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     openLink(mArtist.link);
                 }
             });
+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                getWindow().getSharedElementEnterTransition().addListener(new Transition.TransitionListener() {
+                    @Override
+                    public void onTransitionStart(Transition transition) {
+                        if (savedInstanceState == null) mFab.setVisibility(View.INVISIBLE);
+                    }
+
+                    @Override
+                    public void onTransitionEnd(Transition transition) {
+                        animateFab(mFab, true);
+                    }
+
+                    @Override
+                    public void onTransitionCancel(Transition transition) {
+
+                    }
+
+                    @Override
+                    public void onTransitionPause(Transition transition) {
+
+                    }
+
+                    @Override
+                    public void onTransitionResume(Transition transition) {
+
+                    }
+                });
+            } else {
+                mFab.setVisibility(View.INVISIBLE);
+                animateFab(mFab, true);
+            }
         } else {
-            // Hide button if there's no link to open
-            binding.fabOpenLink.setVisibility(View.GONE);
+            // Don't show the button if there's no link provided
+            mFab.setVisibility(View.INVISIBLE);
         }
     }
 
+    /**
+     * Open an url with Chrome Custom Tabs
+     *
+     * @param url artist website url
+     */
     private void openLink(String url) {
         CustomTabsServiceConnection mCustomTabsServiceConnection = new CustomTabsServiceConnection() {
             @Override
@@ -83,11 +125,28 @@ public class ActivityDetails extends AppCompatActivity {
                 mCustomTabsSession = null;
             }
         };
-        CustomTabsClient.bindCustomTabsService(this, CUSTOM_TAB_PACKAGE_NAME, mCustomTabsServiceConnection);
+        CustomTabsClient.bindCustomTabsService(this, Constants.CUSTOM_TAB_PACKAGE_NAME, mCustomTabsServiceConnection);
         CustomTabsIntent customTabsIntent = new CustomTabsIntent.Builder(mCustomTabsSession)
                 .setShowTitle(true)
+                .setToolbarColor(getResources().getColor(R.color.colorPrimary))
+                .setSecondaryToolbarColor(getResources().getColor(R.color.colorPrimaryDark))
                 .build();
         customTabsIntent.launchUrl(this, Uri.parse(url));
+    }
+
+    /**
+     * Runs a scale animation from the center of a floating action button
+     *
+     * @param fab the button to animate
+     */
+    private void animateFab(FloatingActionButton fab, boolean in) {
+        int from = in ? 0 : 1;
+        int to = in ? 1 : 0;
+        ScaleAnimation scale = new ScaleAnimation(from, to, from, to, 50f, 50f);
+        scale.setDuration(Constants.TRANSITION_DURATION_FAB_DETAILS);
+        scale.setInterpolator(new DecelerateInterpolator());
+        fab.startAnimation(scale);
+        mFab.setVisibility(View.VISIBLE);
     }
 
     @Override

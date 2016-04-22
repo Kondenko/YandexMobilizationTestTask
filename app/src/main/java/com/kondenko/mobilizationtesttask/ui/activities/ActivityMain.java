@@ -58,11 +58,14 @@ public class ActivityMain extends AppCompatActivity implements FragmentArtists.A
     public void onListItemClick(Artist artist, ImageView sharedElement) {
         Intent detailsActivity = new Intent(this, ActivityDetails.class);
         detailsActivity.putExtra(Constants.EXTRA_ARTIST, artist);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            // Start the activity with animation
             ActivityOptionsCompat options = ActivityOptionsCompat.
                     makeSceneTransitionAnimation(this, sharedElement, Constants.TRANSITION_ARTIST_PHOTO);
             startActivity(detailsActivity, options.toBundle());
         } else {
+            // Start the activity without animation
             startActivity(detailsActivity);
         }
     }

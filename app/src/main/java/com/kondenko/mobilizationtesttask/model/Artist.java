@@ -65,7 +65,7 @@ public class Artist implements Parcelable {
      */
     public String getGenresString() {
         if (genres.length == 1)
-            return genres[0]; // No point doing anything else since there's only one genre.
+            return genres[0]; // No point doing anything else id there's only one genre.
         return TextUtils.join(", ", genres);
     }
 
