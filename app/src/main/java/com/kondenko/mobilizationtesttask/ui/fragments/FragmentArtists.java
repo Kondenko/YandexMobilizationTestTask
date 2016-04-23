@@ -20,14 +20,11 @@ import com.kondenko.mobilizationtesttask.R;
 import com.kondenko.mobilizationtesttask.model.Artist;
 import com.kondenko.mobilizationtesttask.utils.ArtistsAdapter;
 import com.kondenko.mobilizationtesttask.utils.ConnectionCheckerAsyncTask;
+import com.kondenko.mobilizationtesttask.utils.JsonCacheHelper;
 
 import org.apache.commons.io.IOUtils;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
@@ -110,36 +107,6 @@ public class FragmentArtists extends Fragment {
     }
 
 
-    /**
-     * Saves a file with JSON code into internal storage
-     *
-     * @param contents json code
-     * @throws IOException
-     */
-    private void cacheJson(String contents) throws IOException {
-        FileOutputStream outputStream = mActivity.openFileOutput(Constants.CACHED_FILE_NAME, Context.MODE_PRIVATE);
-        outputStream.write(contents.getBytes());
-        outputStream.close();
-    }
-
-    /**
-     * Read the file with JSON code from internal storage
-     *
-     * @return JSON code string
-     * <p/>
-     * The snippet is taken from <a href="http://www.stackoverflow.com/questions/14768191/how-do-i-read-the-file-content-from-the-internal-storage-android-app">here</a>
-     */
-    private String getCachedJson() throws IOException {
-        FileInputStream inputStream = mActivity.openFileInput(Constants.CACHED_FILE_NAME);
-        InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
-        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-        StringBuilder stringBuilder = new StringBuilder();
-        String line;
-        while ((line = bufferedReader.readLine()) != null) {
-            stringBuilder.append(line);
-        }
-        return stringBuilder.toString();
-    }
 
     /**
      * Downloads JSON file from specified URL.
@@ -163,7 +130,7 @@ public class FragmentArtists extends Fragment {
 
             try {
                 // Try to use the cached file
-                json = getCachedJson();
+                json = JsonCacheHelper.getCachedJson(getContext());
                 usingCachedFile = true;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -171,7 +138,7 @@ public class FragmentArtists extends Fragment {
                     // The file doesn't exist yet, we should create one
                     // Download the file from the url and save it
                     json = IOUtils.toString(new URL(urls[0]));
-                    cacheJson(json);
+                    JsonCacheHelper.cacheJson(getContext(), json);
                 } catch (IOException e1) {
                     // Can't get any data
                     e1.printStackTrace();
