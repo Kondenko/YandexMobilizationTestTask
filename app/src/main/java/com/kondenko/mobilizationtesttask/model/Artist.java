@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -46,7 +47,6 @@ public class Artist implements Parcelable {
             return 0;
         }
 
-
     }
 
     public int id;
@@ -57,6 +57,8 @@ public class Artist implements Parcelable {
     public String link;
     public String description;
     public Cover cover;
+
+    private static Callback mImageLoadCallback;
 
     /**
      * Returns a single string of genres separated with commas.
@@ -79,12 +81,14 @@ public class Artist implements Parcelable {
     public static void loadImage(ImageView view, String imageUrl) {
         Picasso.with(view.getContext())
                 .load(imageUrl)
-                .into(view);
+                .into(view, mImageLoadCallback);
     }
 
-    /**
-     * Parcelable stuff
-     **/
+    public void setImageLoadCallback(Callback callback) {
+        mImageLoadCallback = callback;
+    }
+
+    /** Parcelable stuff **/
 
     public static final Creator<Artist> CREATOR = new Creator<Artist>() {
         @Override

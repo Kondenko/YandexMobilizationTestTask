@@ -10,6 +10,7 @@ import android.support.customtabs.CustomTabsIntent;
 import android.support.customtabs.CustomTabsServiceConnection;
 import android.support.customtabs.CustomTabsSession;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.Transition;
@@ -22,6 +23,7 @@ import com.kondenko.mobilizationtesttask.Constants;
 import com.kondenko.mobilizationtesttask.R;
 import com.kondenko.mobilizationtesttask.databinding.ActivityArtistDetailsBinding;
 import com.kondenko.mobilizationtesttask.model.Artist;
+import com.squareup.picasso.Callback;
 
 
 /**
@@ -52,6 +54,23 @@ public class ActivityDetails extends AppCompatActivity {
         // Get an artist object from extras
         Intent incoming = getIntent();
         mArtist = incoming.getExtras().getParcelable(Constants.EXTRA_ARTIST);
+        // Postpone shared element transition until artist's photo is loaded
+        supportPostponeEnterTransition();
+        mArtist.setImageLoadCallback(new Callback() {
+            @Override
+            public void onSuccess() {
+                supportStartPostponedEnterTransition();
+            }
+
+            @Override
+            public void onError() {
+                // No connection: don't show the image, collapse the app bar
+                // hiding the FAB which opens artist's website out of sight
+                supportStartPostponedEnterTransition();
+                binding.appBarLayout.setExpanded(false);
+                Snackbar.make(binding.getRoot(), getString(R.string.message_no_connection), Snackbar.LENGTH_LONG).show();
+            }
+        });
         binding.setArtist(mArtist);
 
         // Capitalize the first letter of the description
@@ -59,9 +78,11 @@ public class ActivityDetails extends AppCompatActivity {
 
         // Perform additional stuff
         setTitle(mArtist.name);
+
         mFab = binding.fabOpenInBrowser;
 
         if (mArtist.link != null) {
+
             // Setup a FAB to open artist's website if there is one
             mFab.setOnClickListener(new View.OnClickListener() {
                 @Override
