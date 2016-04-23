@@ -1,13 +1,16 @@
 package com.kondenko.mobilizationtesttask.ui.activities;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -40,6 +43,43 @@ public class ActivityMain extends AppCompatActivity implements FragmentArtists.A
         setFragment(mFragmentArtists);
     }
 
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Setup search
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchManager searchManager = (SearchManager) ActivityMain.this.getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = null;
+
+        if (searchItem != null) {
+            searchView = (SearchView) searchItem.getActionView();
+        }
+        if (searchView != null) {
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(ActivityMain.this.getComponentName()));
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String query) {
+                    if (!query.isEmpty()) mFragmentArtists.searchInList(query);
+                    else mFragmentArtists.searchInList(null);
+                    return true;
+                }
+            });
+            searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+                @Override
+                public boolean onClose() {
+                    mFragmentArtists.searchInList(null);
+                    return false;
+                }
+            });
+        }
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -50,8 +90,7 @@ public class ActivityMain extends AppCompatActivity implements FragmentArtists.A
     }
 
     private void setFragment(Fragment fragment) {
-        FragmentTransaction transaction = mFragmentManager.beginTransaction();
-        transaction.replace(R.id.container, fragment).commit();
+        mFragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
     }
 
     @Override

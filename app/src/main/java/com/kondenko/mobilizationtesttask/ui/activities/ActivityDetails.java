@@ -68,7 +68,7 @@ public class ActivityDetails extends AppCompatActivity {
                 // hiding the FAB which opens artist's website out of sight
                 supportStartPostponedEnterTransition();
                 binding.appBarLayout.setExpanded(false);
-                Snackbar.make(binding.getRoot(), getString(R.string.message_no_connection), Snackbar.LENGTH_LONG).show();
+                Snackbar.make(binding.getRoot(), getString(R.string.err_no_connection), Snackbar.LENGTH_LONG).show();
             }
         });
         binding.setArtist(mArtist);

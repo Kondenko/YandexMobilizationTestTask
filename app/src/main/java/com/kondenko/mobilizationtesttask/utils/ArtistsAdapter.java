@@ -16,15 +16,17 @@ import com.kondenko.mobilizationtesttask.model.Artist;
 import com.kondenko.mobilizationtesttask.ui.fragments.FragmentArtists;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ViewHolder> {
 
-    private final Artist[] mArtists;
+    private List<Artist> mArtists;
     private final FragmentArtists.ArtistsFragmentInteractionListener mListener;
 
-    public ArtistsAdapter(Artist[] artists, FragmentArtists.ArtistsFragmentInteractionListener listener) {
+    public ArtistsAdapter(List<Artist> artists, FragmentArtists.ArtistsFragmentInteractionListener listener) {
         mArtists = artists;
         mListener = listener;
     }
@@ -37,7 +39,7 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        Artist artist = mArtists[position];
+        Artist artist = mArtists.get(position);
         holder.binding.setArtist(artist);
         loadImage(holder.imageView, artist.cover.small);
         ViewCompat.setTransitionName(holder.imageView, String.valueOf(position) + Constants.TRANSITION_ARTIST_NAME_POSTFIX);
@@ -49,7 +51,12 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return mArtists.length;
+        return mArtists.size();
+    }
+
+    public void update(List<Artist> newData) {
+        mArtists = newData;
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -66,7 +73,7 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ViewHold
 
         @Override
         public void onClick(View view) {
-            mListener.onListItemClick(mArtists[getAdapterPosition()], imageView);
+            mListener.onListItemClick(mArtists.get(getAdapterPosition()), imageView);
         }
     }
 

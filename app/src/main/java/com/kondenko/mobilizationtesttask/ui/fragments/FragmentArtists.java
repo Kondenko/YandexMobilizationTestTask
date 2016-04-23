@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -27,6 +29,8 @@ import org.apache.commons.io.IOUtils;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import butterknife.Bind;
@@ -45,6 +49,9 @@ public class FragmentArtists extends Fragment {
     protected ProgressBar mProgressBar;
     @Bind(R.id.recyclerview_artists)
     protected RecyclerView mRecyclerViewArtists;
+    private ArtistsAdapter mAdapter;
+
+    private List<Artist> mData;
 
     private boolean mIsConnectionAvailable = false;
 
@@ -101,17 +108,74 @@ public class FragmentArtists extends Fragment {
     /**
      * Sets up the RecyclerView and its adapter to show the list of artists
      */
-    private void setupRecyclerView(Artist[] data) {
+    private void setupRecyclerView(List<Artist> data) {
+        mData = data;
+        mAdapter = new ArtistsAdapter(data, mListener);
         mRecyclerViewArtists.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerViewArtists.setAdapter(new ArtistsAdapter(data, mListener));
+        mRecyclerViewArtists.setAdapter(mAdapter);
     }
 
+    /**
+     * Updates the RecyclerView to show search results
+     *
+     * @param query text to look for
+     */
+    public void searchInList(@Nullable String query) {
+        if (query == null) {
+            // Return the list to it's original state
+            mAdapter.update(mData);
+        } else {
+            // Show filtered items
+            List<Artist> filteredList = filter(mData, query);
+            if (filteredList.isEmpty())
+                Toast.makeText(getContext(), "No results", Toast.LENGTH_LONG).show();
+            mAdapter.update(filteredList);
+        }
+        mRecyclerViewArtists.scrollToPosition(0);
+    }
 
+    /**
+     * Goes through the given list and filters it according to the given query.
+     *
+     * @param artists list given as search sample
+     * @param query to be searched
+     * @return new filtered list
+     *
+     * @link blog.lovelyhq.com/implementing-a-live-list-search-in-android-action-bar
+     */
+    private List<Artist> filter(List<Artist> artists, String query) {
+        // First we split the query so that we're able
+        // to search word by word (in lower case).
+        String[] queryByWords = query.toLowerCase().split("\\s+");
+        // Empty list to fill with matches.
+        List<Artist> moviesFiltered = new ArrayList<>();
+        // Go through initial releases and perform search.
+        for (Artist artist : artists) {
+            // Content to search through (in lower case).
+            String content = artist.name.toLowerCase();
+            for (String word : queryByWords) {
+                // There is a match only if all of the words are contained.
+                int numberOfMatches = queryByWords.length;
+                // All query words have to be contained,
+                // otherwise the release is filtered out.
+                if (content.contains(word)) {
+                    numberOfMatches--;
+                } else {
+                    break;
+                }
+                // They all match.
+                if (numberOfMatches == 0) {
+                    moviesFiltered.add(artist);
+                }
+            }
+        }
+        return moviesFiltered;
+    }
 
     /**
      * Downloads JSON file from specified URL.
      */
-    private class JsonDownloaderTask extends AsyncTask<String, Void, Artist[]> {
+    private class JsonDownloaderTask extends AsyncTask<String, Void, List<Artist>> {
 
         @Override
         protected void onPreExecute() {
@@ -120,7 +184,7 @@ public class FragmentArtists extends Fragment {
         }
 
         @Override
-        protected Artist[] doInBackground(String... urls) {
+        protected List<Artist> doInBackground(String... urls) {
             // We should be able to download only one json file here
             if (urls.length > 1)
                 throw new IllegalArgumentException("Multiple parameters are not allowed here");
@@ -149,13 +213,13 @@ public class FragmentArtists extends Fragment {
             // Enable offline mode if there's no connection but some data is available offline
             if (usingCachedFile && !mIsConnectionAvailable) mListener.onOfflineModeEnabled();
 
-            Type array = new TypeToken<Artist[]>() {
+            Type array = new TypeToken<List<Artist>>() {
             }.getType();
             return new Gson().fromJson(json, array);
         }
 
         @Override
-        protected void onPostExecute(Artist[] artists) {
+        protected void onPostExecute(List<Artist> artists) {
             super.onPostExecute(artists);
             mProgressBar.setVisibility(View.INVISIBLE);
             if (artists != null) {

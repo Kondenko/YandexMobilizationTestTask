@@ -24,7 +24,7 @@
         android:layout_above="@+id/imageview_error"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="@string/err_retry"
+        android:text="@string/action_retry"
         android:layout_marginTop="@dimen/retry_btn_margin_top"
         android:layout_marginBottom="@dimen/retry_btn_margin_bottom"
         android:background="@android:color/white"
