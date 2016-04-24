@@ -60,12 +60,12 @@
             android:id="@+id/fab_open_in_browser"
             android:layout_width="@dimen/fab_size"
             android:layout_height="@dimen/fab_size"
+            android:layout_marginEnd="@dimen/activity_vertical_margin"
+            android:layout_marginRight="@dimen/activity_vertical_margin"
+            android:src="@drawable/ic_open_in_browser_white_24px"
+            android:visibility="visible"
             app:layout_anchor="@id/app_bar_layout"
             app:layout_anchorGravity="bottom|right|end"
-            android:src="@drawable/ic_open_in_browser_white_24px"
-            android:layout_marginRight="@dimen/activity_vertical_margin"
-            android:layout_marginEnd="@dimen/activity_vertical_margin"
-            android:visibility="visible"
             />
 
         <android.support.v4.widget.NestedScrollView
@@ -77,54 +77,65 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_horizontal_margin"
-                android:layout_marginEnd="@dimen/activity_vertical_margin"
-                android:layout_marginLeft="@dimen/activity_vertical_margin"
-                android:layout_marginRight="@dimen/activity_vertical_margin"
-                android:layout_marginStart="@dimen/activity_vertical_margin"
-                android:orientation="vertical"
-                android:paddingBottom="@dimen/artist_details_text_margin_top_primary"
-                >
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:layout_marginTop="@dimen/artist_details_text_margin_top_primary"
-                    android:text="@{artist.getGenresString()}"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textColor="@color/colorTextSecondary"
-                    />
+                <include
+                    android:id="@+id/textview_offline_mode_details"
+                    layout="@layout/offline_banner"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:layout_marginTop="@dimen/artist_details_text_margin_top_primary"
-                    android:text="@{@plurals/albums(artist.albums, artist.albums, artist.albums, artist.albums, artist.albums, artist.albums) + ',' + ' ' + @plurals/tracks(artist.tracks, artist.tracks, artist.tracks, artist.tracks, artist.tracks, artist.tracks)}"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textColor="@color/colorTextSecondary"
-                    />
+                    android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                    android:layout_marginEnd="@dimen/activity_vertical_margin"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:layout_marginStart="@dimen/activity_vertical_margin"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/artist_details_text_margin_top_primary"
+                    >
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:layout_marginTop="@dimen/artist_details_text_margin_top_primary"
-                    android:text="@string/artist_details_bio"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                    android:textColor="@color/colorTextPrimary"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginTop="@dimen/artist_details_text_margin_top_primary"
+                        android:text="@{artist.getGenresString()}"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textColor="@color/colorTextSecondary"
+                        />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:layout_marginTop="@dimen/artist_details_text_margin_top_secondary"
-                    android:text="@{artist.description}"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textColor="@color/colorTextPrimary"
-                    />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginTop="@dimen/artist_details_text_margin_top_primary"
+                        android:text="@{@plurals/albums(artist.albums, artist.albums, artist.albums, artist.albums, artist.albums, artist.albums) + ',' + ' ' + @plurals/tracks(artist.tracks, artist.tracks, artist.tracks, artist.tracks, artist.tracks, artist.tracks)}"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textColor="@color/colorTextSecondary"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginTop="@dimen/artist_details_text_margin_top_primary"
+                        android:text="@string/artist_details_bio"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textColor="@color/colorTextPrimary"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginTop="@dimen/artist_details_text_margin_top_secondary"
+                        android:text="@{artist.description}"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textColor="@color/colorTextPrimary"
+                        />
+
+                </LinearLayout>
 
             </LinearLayout>
 

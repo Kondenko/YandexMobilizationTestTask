@@ -10,7 +10,6 @@ import android.support.customtabs.CustomTabsIntent;
 import android.support.customtabs.CustomTabsServiceConnection;
 import android.support.customtabs.CustomTabsSession;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.Transition;
@@ -67,8 +66,9 @@ public class ActivityDetails extends AppCompatActivity {
                 // No connection: don't show the image, collapse the app bar
                 // hiding the FAB which opens artist's website out of sight
                 supportStartPostponedEnterTransition();
-                binding.appBarLayout.setExpanded(false);
-                Snackbar.make(binding.getRoot(), getString(R.string.err_no_connection), Snackbar.LENGTH_LONG).show();
+                binding.appBarLayout.setExpanded(false, false);
+                // It seems not possible to access this view with binding
+                findViewById(R.id.textview_offline_mode_details).setVisibility(View.VISIBLE);
             }
         });
         binding.setArtist(mArtist);

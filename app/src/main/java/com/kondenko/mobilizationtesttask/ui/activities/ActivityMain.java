@@ -30,7 +30,7 @@ public class ActivityMain extends AppCompatActivity implements FragmentArtists.A
     private FragmentManager mFragmentManager;
     private FragmentArtists mFragmentArtists;
 
-    @Bind(R.id.textview_offline_mode)
+    @Bind(R.id.textview_offline_mode_main)
     protected TextView mOfflineModeBanner;
 
     @Override
