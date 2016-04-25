@@ -186,12 +186,10 @@ public class FragmentArtists extends Fragment {
                 throw new IllegalArgumentException("Multiple parameters are not allowed here");
 
             String json;
-            boolean usingCachedFile = false;
 
             try {
                 // Try to use the cached file
                 json = JsonCacheHelper.getCachedJson(getContext());
-                usingCachedFile = true;
             } catch (IOException | NullPointerException e) {
                 e.printStackTrace();
                 try {
@@ -206,9 +204,6 @@ public class FragmentArtists extends Fragment {
                     return null;
                 }
             }
-
-            // Enable offline mode if there's no connection but some data is available offline
-            mListener.onOfflineModeEnabled(usingCachedFile, true);
 
             Type array = new TypeToken<List<Artist>>() {
             }.getType();
