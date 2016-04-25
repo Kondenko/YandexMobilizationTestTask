@@ -37,7 +37,7 @@
         android:layout_height="@dimen/error_image_height"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        app:srcCompat="@drawable/error_screen_img"/>
+        app:srcCompat="@drawable/img_error"/>
 
 
 </RelativeLayout>
