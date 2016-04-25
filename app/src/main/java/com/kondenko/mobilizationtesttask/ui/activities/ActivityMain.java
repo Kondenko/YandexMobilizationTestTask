@@ -39,6 +39,16 @@ public class ActivityMain extends AppCompatActivity implements FragmentArtists.A
     protected TextView mOfflineModeBanner;
 
     @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+        mFragmentManager = getSupportFragmentManager();
+        mFragmentArtists = FragmentArtists.newInstance();
+        setFragment(mFragmentArtists);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         mReceiver = new ConnectivityBroadcastReceiver();
@@ -55,16 +65,6 @@ public class ActivityMain extends AppCompatActivity implements FragmentArtists.A
     protected void onPause() {
         super.onPause();
         unregisterReceiver(mReceiver);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
-        mFragmentManager = getSupportFragmentManager();
-        mFragmentArtists = FragmentArtists.newInstance();
-        setFragment(mFragmentArtists);
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
