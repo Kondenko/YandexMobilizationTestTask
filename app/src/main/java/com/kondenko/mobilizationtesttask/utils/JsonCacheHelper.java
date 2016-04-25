@@ -16,9 +16,8 @@ public abstract class JsonCacheHelper {
      * Saves a file with JSON code into internal storage
      *
      * @param jsonContents json code
-     * @throws IOException
      */
-    public static void cacheJson(Context context, String jsonContents) throws IOException {
+    public static void cacheJson(Context context, String jsonContents) throws IOException, NullPointerException {
         FileOutputStream outputStream = context.openFileOutput(Constants.CACHED_FILE_NAME, Context.MODE_PRIVATE);
         outputStream.write(jsonContents.getBytes());
         outputStream.close();
@@ -31,7 +30,7 @@ public abstract class JsonCacheHelper {
      * <p/>
      * The snippet is taken from <a href="http://www.stackoverflow.com/questions/14768191/how-do-i-read-the-file-content-from-the-internal-storage-android-app">here</a>
      */
-    public static  String getCachedJson(Context context) throws IOException {
+    public static  String getCachedJson(Context context) throws IOException, NullPointerException {
         FileInputStream inputStream = context.openFileInput(Constants.CACHED_FILE_NAME);
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);

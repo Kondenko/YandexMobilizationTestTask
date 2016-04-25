@@ -3,6 +3,8 @@ package com.kondenko.mobilizationtesttask.ui.activities;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -21,17 +23,39 @@ import com.kondenko.mobilizationtesttask.R;
 import com.kondenko.mobilizationtesttask.model.Artist;
 import com.kondenko.mobilizationtesttask.ui.fragments.FragmentArtists;
 import com.kondenko.mobilizationtesttask.ui.fragments.FragmentError;
+import com.kondenko.mobilizationtesttask.utils.ConnectivityBroadcastReceiver;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class ActivityMain extends AppCompatActivity implements FragmentArtists.ArtistsFragmentInteractionListener {
 
+    private ConnectivityBroadcastReceiver mReceiver;
+
     private FragmentManager mFragmentManager;
     private FragmentArtists mFragmentArtists;
 
     @Bind(R.id.textview_offline_mode_main)
     protected TextView mOfflineModeBanner;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mReceiver = new ConnectivityBroadcastReceiver();
+        registerReceiver(mReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        mReceiver.setConnectivityListener(new ConnectivityBroadcastReceiver.ConnectivityListener() {
+            @Override
+            public void onConnectionChecked(boolean available) {
+                onOfflineModeEnabled(!available, false);
+            }
+        });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(mReceiver);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +121,7 @@ public class ActivityMain extends AppCompatActivity implements FragmentArtists.A
     public void onListItemClick(Artist artist, ImageView sharedElement) {
         Intent detailsActivity = new Intent(this, ActivityDetails.class);
         detailsActivity.putExtra(Constants.EXTRA_ARTIST, artist);
+        detailsActivity.putExtra(Constants.EXTRA_CONNECTION, mReceiver.isConnectionAvailable());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             // Start the activity with animation
@@ -110,8 +135,9 @@ public class ActivityMain extends AppCompatActivity implements FragmentArtists.A
     }
 
     @Override
-    public void onOfflineModeEnabled() {
-        mOfflineModeBanner.setVisibility(View.VISIBLE);
+    public void onOfflineModeEnabled(boolean enabled, boolean performConnectivityCheck) {
+        enabled = performConnectivityCheck ? enabled && mReceiver.isConnectionAvailable() : enabled;
+        mOfflineModeBanner.setVisibility(enabled ? View.VISIBLE : View.GONE);
     }
 
     @Override

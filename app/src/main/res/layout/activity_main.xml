@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.activities.ActivityMain">
+    tools:context=".ui.activities.ActivityMain"
+    >
 
     <include android:id="@+id/textview_offline_mode_main" layout="@layout/offline_banner"/>
 

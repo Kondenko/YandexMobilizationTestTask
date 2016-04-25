@@ -74,8 +74,8 @@ public class Artist implements Parcelable {
     /**
      * Loads an image into an ImageView within a layout with Data Binding support
      *
-     * @param view
-     * @param imageUrl
+     * @param view     an ImageView to show loaded photo
+     * @param imageUrl URL of the image
      */
     @BindingAdapter({"bind:imageUrl"})
     public static void loadImage(ImageView view, String imageUrl) {
@@ -88,7 +88,9 @@ public class Artist implements Parcelable {
         mImageLoadCallback = callback;
     }
 
-    /** Parcelable stuff **/
+    /**
+     * Parcelable stuff
+     **/
 
     public static final Creator<Artist> CREATOR = new Creator<Artist>() {
         @Override

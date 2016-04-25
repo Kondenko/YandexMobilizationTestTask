@@ -1,6 +1,5 @@
 package com.kondenko.mobilizationtesttask.ui.fragments;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,7 +20,6 @@ import com.kondenko.mobilizationtesttask.Constants;
 import com.kondenko.mobilizationtesttask.R;
 import com.kondenko.mobilizationtesttask.model.Artist;
 import com.kondenko.mobilizationtesttask.utils.ArtistsAdapter;
-import com.kondenko.mobilizationtesttask.utils.ConnectionCheckerAsyncTask;
 import com.kondenko.mobilizationtesttask.utils.JsonCacheHelper;
 
 import org.apache.commons.io.IOUtils;
@@ -31,7 +29,6 @@ import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -42,7 +39,6 @@ import butterknife.ButterKnife;
  */
 public class FragmentArtists extends Fragment {
 
-    private Activity mActivity;
     private ArtistsFragmentInteractionListener mListener;
 
     @Bind(R.id.progressbar_artists)
@@ -68,14 +64,15 @@ public class FragmentArtists extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_artists, container, false);
         ButterKnife.bind(this, rootView);
 
-        mActivity = getActivity();
-        mActivity.setTitle(R.string.title_artists);
+        getActivity().setTitle(R.string.title_artists);
 
+        /*
         try {
             mIsConnectionAvailable = new ConnectionCheckerAsyncTask().execute().get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
+        */
 
         runJsonParsingTask(); // Download JSON, parse it and configure RecyclerView to show it
         return rootView;
@@ -138,9 +135,8 @@ public class FragmentArtists extends Fragment {
      * Goes through the given list and filters it according to the given query.
      *
      * @param artists list given as search sample
-     * @param query to be searched
+     * @param query   to be searched
      * @return new filtered list
-     *
      * @link blog.lovelyhq.com/implementing-a-live-list-search-in-android-action-bar
      */
     private List<Artist> filter(List<Artist> artists, String query) {
@@ -196,14 +192,15 @@ public class FragmentArtists extends Fragment {
                 // Try to use the cached file
                 json = JsonCacheHelper.getCachedJson(getContext());
                 usingCachedFile = true;
-            } catch (IOException e) {
+            } catch (IOException | NullPointerException e) {
                 e.printStackTrace();
                 try {
-                    // The file doesn't exist yet, we should create one
+                    // The file doesn't exist yet, or can't be opened.
+                    // We try to create one.
                     // Download the file from the url and save it
                     json = IOUtils.toString(new URL(urls[0]));
                     JsonCacheHelper.cacheJson(getContext(), json);
-                } catch (IOException e1) {
+                } catch (IOException | NullPointerException e1) {
                     // Can't get any data
                     e1.printStackTrace();
                     return null;
@@ -211,7 +208,7 @@ public class FragmentArtists extends Fragment {
             }
 
             // Enable offline mode if there's no connection but some data is available offline
-            if (usingCachedFile && !mIsConnectionAvailable) mListener.onOfflineModeEnabled();
+            mListener.onOfflineModeEnabled(usingCachedFile, true);
 
             Type array = new TypeToken<List<Artist>>() {
             }.getType();
@@ -235,7 +232,7 @@ public class FragmentArtists extends Fragment {
     public interface ArtistsFragmentInteractionListener {
         void onListItemClick(Artist artistItem, ImageView sharedElement);
 
-        void onOfflineModeEnabled();
+        void onOfflineModeEnabled(boolean enabled, boolean performConnectivityCheck);
 
         void onLoadingFail();
     }

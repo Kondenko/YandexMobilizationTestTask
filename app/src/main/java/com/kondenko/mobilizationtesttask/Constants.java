@@ -12,6 +12,7 @@ public class Constants {
     public static final String CUSTOM_TAB_PACKAGE_NAME = "com.android.chrome";
 
     public static final String EXTRA_ARTIST = "artist";
+    public static final String EXTRA_CONNECTION = "isConnectionAvailable";
 
     public static final String TRANSITION_ARTIST_NAME_POSTFIX = "_artist";
     public static final String TRANSITION_ARTIST_PHOTO = "transitionArtistPhoto";
