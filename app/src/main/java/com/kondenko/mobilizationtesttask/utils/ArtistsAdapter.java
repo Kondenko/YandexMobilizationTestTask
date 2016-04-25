@@ -45,8 +45,8 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ViewHold
         ViewCompat.setTransitionName(holder.imageView, String.valueOf(position) + Constants.TRANSITION_ARTIST_NAME_POSTFIX);
     }
 
-    public static void loadImage(ImageView imageView, String imageUrl) {
-        Picasso.with(imageView.getContext()).load(imageUrl).into(imageView);
+    private void loadImage(ImageView imageView, String imageUrl) {
+        Picasso.with(imageView.getContext()).load(imageUrl).placeholder(R.drawable.photo_placeholder).into(imageView);
     }
 
     @Override

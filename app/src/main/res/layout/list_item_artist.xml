@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
+<layout
         xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
@@ -19,7 +19,8 @@
             android:id="@+id/imageview_artist"
             android:layout_width="@dimen/list_item_artist_photo_size"
             android:layout_height="@dimen/list_item_artist_photo_size"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            android:scaleType='fitXY'/>
 
         <TextView
             android:id="@+id/textview_artist_name"
