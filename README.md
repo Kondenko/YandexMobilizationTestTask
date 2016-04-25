@@ -9,7 +9,7 @@ This app displays a list of populars singers with detailed information about the
 - Android Data Binding
 - Chrome Custom Tabs
 
-** Yandex lead developer surely will see **
+**Yandex lead developer surely will see**
 - [x] Plenty of comments
 - [x] Error handling
 - [x] A bit of animations 
