@@ -61,8 +61,8 @@ public class ActivityDetails extends AppCompatActivity {
         // Get extras
         Intent incoming = getIntent();
         mArtist = incoming.getExtras().getParcelable(Constants.EXTRA_ARTIST);
-        // This variable is needed because we cant check if user is online within onCreate block.
-        // So we suppose the connection remains the same as it was when user was on the previous screen.
+        // This variable is needed because we cant check if user is online within onCreate method.
+        // So we suppose the connection remains the same as it was when the user was on the previous screen.
         // I know this is not a very good practice though.
         mIsConnectionAvailable = incoming.getBooleanExtra(Constants.EXTRA_CONNECTION, false);
 

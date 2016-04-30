@@ -2,6 +2,9 @@
 package com.kondenko.mobilizationtesttask.utils;
 
 import android.databinding.DataBindingUtil;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,6 +18,7 @@ import com.kondenko.mobilizationtesttask.databinding.ListItemArtistBinding;
 import com.kondenko.mobilizationtesttask.model.Artist;
 import com.kondenko.mobilizationtesttask.ui.fragments.FragmentArtists;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RequestCreator;
 
 import java.util.List;
 
@@ -46,7 +50,19 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ViewHold
     }
 
     private void loadImage(ImageView imageView, String imageUrl) {
-        Picasso.with(imageView.getContext()).load(imageUrl).placeholder(R.drawable.photo_placeholder).into(imageView);
+        RequestCreator requestCreator = Picasso.with(imageView.getContext()).load(imageUrl);
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP || Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP_MR1) {
+            // Use a vector drawable
+            requestCreator.placeholder(R.drawable.ic_photo_placeholder_24dp_vector);
+        } else {
+            // Use a PNG drawable
+            Drawable placeholderDrawable = ResourcesCompat.getDrawable(imageView.getContext().getResources(), R.drawable.ic_photo_placeholder_24dp, null);
+            if (placeholderDrawable != null) {
+                placeholderDrawable.setAlpha(20); // Reduce opacity
+                requestCreator.placeholder(placeholderDrawable);
+            }
+        }
+        requestCreator.into(imageView);
     }
 
     @Override

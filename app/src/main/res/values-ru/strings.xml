@@ -36,6 +36,7 @@
         <item quantity="many">%d песен</item>
         <item quantity="other">%d песен</item>
     </plurals>
+    <string name="transition_artist_photo">transitionArtistPhoto</string>
 
 
 </resources>
